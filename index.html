@@ -1,0 +1,463 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>디지털 윤리 - 바른 스마트 가디언 카드</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Pretendard:wght@400;700;900&display=swap');
+        
+        :root {
+            --rank-s: #fcd34d;
+            --rank-a: #fb923c;
+            --rank-b: #60a5fa;
+            --rank-c: #a78bfa;
+            --rank-d: #f472b6;
+            --rank-e: #fb7185;
+            --rank-f: #94a3b8;
+        }
+
+        body { 
+            font-family: 'Pretendard', sans-serif; 
+            background: linear-gradient(135deg, #0f172a 0%, #1e293b 100%);
+            min-height: 100vh;
+            color: #f1f5f9;
+            margin: 0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .glass {
+            background: rgba(255, 255, 255, 0.05);
+            backdrop-filter: blur(16px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
+        }
+
+        .card-pokemon {
+            width: 320px;
+            height: 480px;
+            background: linear-gradient(45deg, #1e293b, #334155);
+            border: 12px solid #fbbf24;
+            border-radius: 20px;
+            position: relative;
+            box-shadow: 0 0 30px rgba(251, 191, 36, 0.4);
+            transition: all 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            margin: 0 auto;
+        }
+
+        .card-pokemon.rank-s { border-color: #fcd34d; box-shadow: 0 0 40px #fcd34d; }
+        .card-pokemon.rank-a { border-color: #fb923c; }
+        .card-pokemon.rank-b { border-color: #60a5fa; }
+        .card-pokemon.rank-c { border-color: #a78bfa; }
+        .card-pokemon.rank-d { border-color: #f472b6; }
+        .card-pokemon.rank-e { border-color: #fb7185; }
+        .card-pokemon.rank-f { border-color: #94a3b8; }
+
+        .card-header {
+            padding: 10px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .card-img-box {
+            width: 85%;
+            height: 160px;
+            background: white;
+            margin: 0 auto;
+            border: 4px solid #475569;
+            border-radius: 4px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .card-hologram {
+            position: absolute;
+            inset: 0;
+            background: linear-gradient(110deg, rgba(255,255,255,0) 30%, rgba(255,255,255,0.2) 45%, rgba(255,255,255,0) 60%);
+            background-size: 200% 100%;
+            animation: holo 3s linear infinite;
+        }
+        @keyframes holo { 0% { background-position: -100% 0; } 100% { background-position: 100% 0; } }
+
+        .btn-gradient {
+            background: linear-gradient(to right, #6366f1, #a855f7);
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .btn-gradient:hover:not(:disabled) {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 15px -3px rgba(99, 102, 241, 0.4);
+        }
+
+        .stat-bar { height: 10px; background: #334155; border-radius: 5px; overflow: hidden; }
+        .stat-fill { height: 100%; background: #6366f1; transition: width 0.8s ease-out; }
+
+        .fade-in { animation: fadeIn 0.6s ease-out forwards; }
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+
+        .scrolling-content { animation: scroll 40s linear infinite; }
+        @keyframes scroll { 0% { transform: translateY(0); } 100% { transform: translateY(-50%); } }
+
+        .image-box {
+            width: 100%;
+            height: 180px;
+            border-radius: 20px;
+            overflow: hidden;
+            background: #1e293b;
+            margin-bottom: 2rem;
+            border: 2px solid rgba(255,255,255,0.1);
+        }
+        .image-box img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+    </style>
+</head>
+<body class="p-4">
+
+    <div id="app" class="max-w-xl w-full">
+        
+        <!-- 시작 화면 -->
+        <div id="start-screen" class="glass rounded-3xl p-10 text-center fade-in">
+            <div class="mb-8 relative inline-block">
+                <div class="absolute inset-0 bg-indigo-500 blur-3xl opacity-30 rounded-full animate-pulse"></div>
+                <div class="text-7xl">⚔️</div>
+            </div>
+            <h1 class="text-4xl font-extrabold mb-4 tracking-tight text-white font-black">디지털 가디언 카드</h1>
+            <p class="text-slate-400 mb-8 leading-relaxed">
+                나의 스마트기기 습관이 전설의 카드가 됩니다.<br>
+                민수를 성장시켜 S급 레전드 카드를 획득하세요!
+            </p>
+            <input id="char-name" type="text" placeholder="가디언 이름 (예: 민수)" class="w-full p-4 rounded-2xl bg-white/10 border-2 border-white/20 text-white font-bold mb-6 text-center focus:border-indigo-500 outline-none">
+            <button onclick="startGame()" class="btn-gradient w-full text-white font-black py-5 px-8 rounded-2xl text-xl shadow-2xl">
+                카드 각성 시작하기
+            </button>
+        </div>
+
+        <!-- 게임 화면 -->
+        <div id="game-screen" class="hidden glass rounded-3xl overflow-hidden fade-in min-h-[600px] flex flex-col">
+            <div class="bg-white/5 p-6 border-b border-white/10">
+                <div class="flex justify-between items-center mb-4">
+                    <span id="char-display-name" class="bg-indigo-600 text-white px-4 py-1 rounded-full text-xs font-black">LEVEL: 1</span>
+                    <span id="scene-title" class="text-slate-400 text-xs">READY...</span>
+                </div>
+                <div class="grid grid-cols-3 gap-4">
+                    <div class="space-y-1"><div class="flex justify-between text-[10px] font-bold text-slate-400"><span>🕒 시간</span><span id="s-time">50%</span></div><div class="stat-bar"><div id="b-time" class="stat-fill" style="width: 50%;"></div></div></div>
+                    <div class="space-y-1"><div class="flex justify-between text-[10px] font-bold text-slate-400"><span>🤝 예절</span><span id="s-etic">50%</span></div><div class="stat-bar"><div id="b-etic" class="stat-fill bg-indigo-400" style="width: 50%;"></div></div></div>
+                    <div class="space-y-1"><div class="flex justify-between text-[10px] font-bold text-slate-400"><span>🔋 건강</span><span id="s-health">100%</span></div><div class="stat-bar"><div id="b-health" class="stat-fill bg-emerald-400" style="width: 100%;"></div></div></div>
+                </div>
+            </div>
+            
+            <div class="p-8 flex-grow flex flex-col justify-center text-center">
+                <div class="image-box">
+                    <img id="scene-img" src="" alt="scene illustration">
+                </div>
+                <p id="story-description" class="text-2xl font-black text-white leading-tight mb-8"></p>
+                <div id="choices-area" class="space-y-4"></div>
+                <div id="feedback-box" class="hidden mt-6 p-5 rounded-2xl font-bold bg-rose-500/20 text-rose-300 border border-rose-500/50"></div>
+                <button id="retry-btn" class="hidden mt-6 w-full bg-white text-slate-900 font-bold py-4 rounded-2xl hover:bg-slate-200">다시 선택하기</button>
+            </div>
+        </div>
+
+        <!-- 결과 카드 화면 -->
+        <div id="result-screen" class="hidden text-center fade-in pb-10">
+            <h2 class="text-3xl font-black text-white mb-8">가디언 카드 획득!</h2>
+            
+            <div id="pokemon-card" class="card-pokemon mb-8">
+                <div class="card-header">
+                    <span class="text-white font-black text-sm" id="card-name-text">MINSU</span>
+                    <span class="text-slate-200 font-black text-xl" id="card-hp-text">HP 100</span>
+                </div>
+                <div class="card-img-box">
+                    <div class="card-hologram"></div>
+                    <span id="card-icon" class="text-7xl relative z-10">🤖</span>
+                </div>
+                <div class="p-4 text-left">
+                    <div class="bg-white/10 p-2 rounded mb-3 text-center">
+                        <span id="card-rank-text" class="text-2xl font-black italic tracking-tighter">S RANK</span>
+                    </div>
+                    <div class="space-y-2 text-[10px] font-bold text-slate-300">
+                        <div class="flex justify-between"><span>🕒 TIME MASTERY</span><span id="c-stat-time">95%</span></div>
+                        <div class="flex justify-between"><span>🤝 DIGITAL MANNER</span><span id="c-stat-etic">90%</span></div>
+                        <div class="flex justify-between"><span>🔋 VITALITY</span><span id="c-stat-health">100%</span></div>
+                    </div>
+                    <p id="card-desc" class="mt-4 text-[11px] text-white leading-tight font-medium opacity-80"></p>
+                </div>
+            </div>
+
+            <div class="glass rounded-3xl p-6 mb-8 text-left">
+                <h3 class="text-sm font-bold text-indigo-400 mb-4 flex items-center">
+                    📊 실시간 가디언 분포 (전체 <span id="total-count" class="mx-1">0</span>명 참여)
+                </h3>
+                <div id="stats-area" class="space-y-3"></div>
+            </div>
+
+            <button onclick="showPledge()" class="btn-gradient w-full text-white font-black py-5 px-8 rounded-2xl text-xl">
+                다짐 남기고 카드 등록
+            </button>
+        </div>
+
+        <!-- 게시판 -->
+        <div id="pledge-screen" class="hidden space-y-6 fade-in pb-10">
+            <div class="glass rounded-3xl p-8">
+                <h2 class="text-2xl font-black text-white mb-6">🤝 나의 스마트 약속</h2>
+                <div class="space-y-4">
+                    <div class="grid grid-cols-2 gap-4">
+                        <input id="user-school" type="text" placeholder="학교" class="p-4 rounded-xl bg-white/10 text-white outline-none focus:ring-2 ring-indigo-500">
+                        <input id="user-name" type="text" placeholder="이름" class="p-4 rounded-xl bg-white/10 text-white outline-none focus:ring-2 ring-indigo-500">
+                    </div>
+                    <textarea id="user-pledge" rows="3" placeholder="다짐 한마디" class="w-full p-4 rounded-xl bg-white/10 text-white outline-none focus:ring-2 ring-indigo-500"></textarea>
+                    <button id="submit-pledge" onclick="submitPledge()" class="btn-gradient w-full text-white font-bold py-4 rounded-xl shadow-lg">약속 등록하기</button>
+                </div>
+            </div>
+            <div class="glass rounded-3xl p-6 h-80 overflow-hidden relative">
+                <div id="board-content" class="scrolling-content space-y-3"></div>
+            </div>
+            <button onclick="location.reload()" class="w-full text-slate-400 font-bold hover:text-white transition-colors">다시 키우기</button>
+        </div>
+    </div>
+
+    <script>
+        const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbwcDpo1f0g7UFLXD4fwM3oXW9VdUsCXSpMBEGaLESIu_xi3svT850PGu68P1o2ENya-/exec';
+
+        const STORY = {
+            'morning': {
+                title: 'HOME - 08:00',
+                img: 'morning.png',
+                desc: '잠에서 깬 가디언, 머리맡의 스마트기기가 반짝입니다. 남은 시간은 15분!',
+                choices: [
+                    { text: '유튜브 숏츠 1개만 시청하기', next: 'm_bad', stats: { time: -20, health: -10 } },
+                    { text: '폰을 끄고 가볍게 스트레칭', next: 'school', stats: { time: +15, health: +10 } }
+                ]
+            },
+            'm_bad': { desc: '영상을 보다 지각 위기! 눈이 뻑뻑해졌어요.', isBad: true, retry: 'morning' },
+            'school': {
+                title: 'SCHOOL - 09:00',
+                img: 'school.png',
+                desc: '수업 시간입니다. 가디언의 도구를 어떻게 세팅할까요?',
+                choices: [
+                    { text: '전원을 끄고 가방에 보관', next: 'branch', stats: { etic: +20, time: +10 } },
+                    { text: '무음으로 책상 서랍 속에 숨기기', next: 's_bad', stats: { etic: -20, health: -10 } }
+                ]
+            },
+            's_bad': { desc: '몰래 폰을 보다 깜짝 놀라 집중력을 잃었습니다.', isBad: true, retry: 'school' },
+            'branch': {
+                title: 'CHOICE - 16:00',
+                desc: '방과 후 시간입니다. 어느 필드로 이동할까요?',
+                choices: [
+                    { text: '📚 스터디 필드 (학원/집중)', next: 'aca' },
+                    { text: '🛝 액티비티 필드 (놀이터/활동)', next: 'play' }
+                ]
+            },
+            'aca': {
+                title: 'ACADEMY - 17:00',
+                img: 'academy.png',
+                desc: '중요한 공부 시간, 알림음이 울립니다!',
+                choices: [
+                    { text: '즉시 비행기 모드 전환', next: 'dinner', stats: { time: +20, etic: +10 } },
+                    { text: '몰래 답장 하나만 보내기', next: 'a_bad', stats: { time: -15, health: -10 } }
+                ]
+            },
+            'a_bad': { desc: '공부 흐름이 깨져서 해야할 일을 못 마쳤어요.', isBad: true, retry: 'aca' },
+            'play': {
+                title: 'PLAYGROUND - 17:00',
+                img: 'playground.png',
+                desc: '친구들이 게임 한 판 하자고 합니다.',
+                choices: [
+                    { text: '오늘은 축구를 하자고 제안', next: 'dinner', stats: { health: +20, etic: +10 } },
+                    { text: '같이 벤치에 앉아 게임 접속', next: 'p_bad', stats: { health: -10, etic: -10 } }
+                ]
+            },
+            'p_bad': { desc: '야외 활동 시간에 폰만 보니 눈이 침침해요.', isBad: true, retry: 'play' },
+            'dinner': {
+                title: 'DINNER - 19:30',
+                img: 'dinner.png',
+                desc: '가족 식사 시간, 보고 싶은 영상이 업로드되었습니다.',
+                choices: [
+                    { text: '식탁에서 폰은 저 멀리 두기', next: 'night', stats: { etic: +20, health: +10 } },
+                    { text: '식탁 아래서 몰래 시청', next: 'd_bad', stats: { etic: -20, health: -10 } }
+                ]
+            },
+            'd_bad': { desc: '가족과의 대화 기회를 놓치고 꾸중을 들었습니다.', isBad: true, retry: 'dinner' },
+            'night': {
+                title: 'BEDTIME - 22:00',
+                img: 'night.png',
+                desc: '취침 시간, 게임 이벤트 보상이 생각납니다.',
+                choices: [
+                    { text: '거실 충전소에 맡기고 취침', next: 'end', stats: { health: +35, time: +25 } },
+                    { text: '이불 속에서 몰래 한 판', next: 'n_bad', stats: { health: -40, time: -30 } }
+                ]
+            },
+            'n_bad': { desc: '새벽까지 폰을 보다 성장을 방해받았습니다.', isBad: true, retry: 'night' }
+        };
+
+        let current = 'morning';
+        let stats = { time: 50, etic: 50, health: 100 };
+        let charName = "MINSU";
+        let finalRank = 'F';
+
+        function startGame() {
+            const input = document.getElementById('char-name').value.trim();
+            if (input) charName = input.toUpperCase();
+            document.getElementById('start-screen').classList.add('hidden');
+            document.getElementById('game-screen').classList.remove('hidden');
+            render();
+        }
+
+        function render() {
+            if (current === 'end') { showResult(); return; }
+            const s = STORY[current];
+            updateBars();
+            document.getElementById('scene-title').innerText = s.title || "OOPS";
+            document.getElementById('story-description').innerText = s.desc;
+            
+            const imgEl = document.getElementById('scene-img');
+            if (s.img) {
+                imgEl.src = 'images/' + s.img;
+                imgEl.parentElement.style.display = 'block';
+            } else {
+                imgEl.parentElement.style.display = 'none';
+            }
+
+            const area = document.getElementById('choices-area');
+            const retry = document.getElementById('retry-btn');
+            const feed = document.getElementById('feedback-box');
+            
+            area.innerHTML = ''; retry.classList.add('hidden'); feed.classList.add('hidden');
+
+            if (s.isBad) {
+                feed.innerText = s.desc; feed.classList.remove('hidden');
+                retry.classList.remove('hidden');
+                retry.onclick = () => { current = s.retry; render(); };
+            } else {
+                s.choices.forEach(c => {
+                    const d = document.createElement('div');
+                    d.className = 'glass p-5 rounded-2xl font-bold text-white cursor-pointer hover:bg-white/10 transition-all';
+                    d.innerText = c.text;
+                    d.onclick = () => {
+                        if (c.stats) for(let k in c.stats) stats[k] += c.stats[k];
+                        current = c.next; render();
+                    };
+                    area.appendChild(d);
+                });
+            }
+        }
+
+        function updateBars() {
+            for(let k in stats) { if(stats[k]>100) stats[k]=100; if(stats[k]<0) stats[k]=0; }
+            document.getElementById('s-time').innerText = stats.time + '%';
+            document.getElementById('b-time').style.width = stats.time + '%';
+            document.getElementById('s-etic').innerText = stats.etic + '%';
+            document.getElementById('b-etic').style.width = stats.etic + '%';
+            document.getElementById('s-health').innerText = stats.health + '%';
+            document.getElementById('b-health').style.width = stats.health + '%';
+        }
+
+        async function showResult() {
+            document.getElementById('game-screen').classList.add('hidden');
+            document.getElementById('result-screen').classList.remove('hidden');
+            
+            const total = (stats.time + stats.etic + stats.health) / 3;
+            let icon = "🤖", rank = "F", color = "#94a3b8", d = "";
+
+            if (total >= 95) { rank = "S"; icon = "👑"; color = "var(--rank-s)"; d = "전설의 디지털 마스터 가디언! 당신의 자제력은 세계 최고 수준입니다."; }
+            else if (total >= 80) { rank = "A"; icon = "💎"; color = "var(--rank-a)"; d = "빛나는 에픽 가디언! 스마트기기를 도구로 완벽히 다룰 줄 아시네요."; }
+            else if (total >= 65) { rank = "B"; icon = "⚔️"; color = "var(--rank-b)"; d = "든든한 레어 가디언! 조금만 더 노력하면 마스터가 될 수 있어요."; }
+            else if (total >= 50) { rank = "C"; icon = "🛡️"; color = "var(--rank-c)"; d = "성장하는 언커먼 가디언! 이제 스스로 규칙을 세우는 연습을 해요."; }
+            else if (total >= 35) { rank = "D"; icon = "🌱"; color = "var(--rank-d)"; d = "보통의 커먼 가디언! 가끔은 폰보다 현실의 즐거움에 더 집중해봐요."; }
+            else if (total >= 20) { rank = "E"; icon = "⚠️"; color = "var(--rank-e)"; d = "조심해야 할 가디언! 스마트폰 중독의 위험이 있으니 주의가 필요해요."; }
+            else { rank = "F"; icon = "💀"; color = "var(--rank-f)"; d = "위험한 상태의 부캐! 현실의 삶을 되찾기 위한 강력한 약속이 필요합니다."; }
+
+            finalRank = rank;
+            const card = document.getElementById('pokemon-card');
+            card.className = `card-pokemon rank-${rank.toLowerCase()}`;
+            document.getElementById('card-name-text').innerText = charName;
+            document.getElementById('card-rank-text').innerText = rank + " RANK";
+            document.getElementById('card-rank-text').style.color = color;
+            document.getElementById('card-icon').innerText = icon;
+            document.getElementById('card-desc').innerText = d;
+            document.getElementById('card-hp-text').innerText = "HP " + stats.health;
+            document.getElementById('c-stat-time').innerText = stats.time + '%';
+            document.getElementById('c-stat-etic').innerText = stats.etic + '%';
+            document.getElementById('c-stat-health').innerText = stats.health + '%';
+
+            fetchStats();
+        }
+
+        async function fetchStats() {
+            if (!SCRIPT_URL) return;
+            try {
+                const res = await fetch(SCRIPT_URL);
+                const data = await res.json();
+                const s = data.stats;
+                document.getElementById('total-count').innerText = s.total;
+                const area = document.getElementById('stats-area');
+                area.innerHTML = '';
+                ['S', 'A', 'B', 'C', 'D', 'E', 'F'].forEach(r => {
+                    const count = s[r] || 0;
+                    const per = s.total > 0 ? Math.round((count / s.total) * 100) : 0;
+                    area.innerHTML += `
+                        <div class="space-y-1">
+                            <div class="flex justify-between text-[10px] font-bold text-slate-400">
+                                <span>${r} RANK 가디언</span>
+                                <span>${count}명 (${per}%)</span>
+                            </div>
+                            <div class="stat-bar"><div class="stat-fill" style="width: ${per}%; background: var(--rank-${r.toLowerCase()})"></div></div>
+                        </div>
+                    `;
+                });
+            } catch (e) { }
+        }
+
+        function showPledge() {
+            document.getElementById('result-screen').classList.add('hidden');
+            document.getElementById('pledge-screen').classList.remove('hidden');
+            loadBoard();
+        }
+
+        async function submitPledge() {
+            const sc = document.getElementById('user-school').value;
+            const nm = document.getElementById('user-name').value;
+            const pl = document.getElementById('user-pledge').value;
+            const btn = document.getElementById('submit-pledge');
+            if(!sc || !nm || !pl) { alert('빈칸을 채워주세요!'); return; }
+            btn.disabled = true; btn.innerText = '저장 중...';
+            try {
+                await fetch(SCRIPT_URL, {
+                    method: 'POST', mode: 'no-cors',
+                    body: JSON.stringify({ school: sc, name: nm, pledge: pl, rank: finalRank })
+                });
+                alert('다짐이 등록되었습니다!');
+                loadBoard();
+            } catch (e) { alert('오류 발생'); }
+            finally { btn.disabled = false; btn.innerText = '약속 등록하기'; }
+        }
+
+        async function loadBoard() {
+            if (!SCRIPT_URL) return;
+            const area = document.getElementById('board-content');
+            try {
+                const res = await fetch(SCRIPT_URL);
+                const data = await res.json();
+                area.innerHTML = data.recent.map(i => `
+                    <div class="bg-white/5 p-4 rounded-xl border border-white/10 flex flex-col gap-1">
+                        <div class="flex justify-between items-center text-[10px] font-bold">
+                            <span class="text-indigo-400">${i.school} ${i.name}</span>
+                            <span class="text-slate-500">${i.rank} RANK 가디언</span>
+                        </div>
+                        <p class="text-sm text-white font-bold leading-relaxed">"${i.pledge}"</p>
+                    </div>
+                `).join('');
+            } catch (e) { }
+        }
+    </script>
+</body>
+</html>
