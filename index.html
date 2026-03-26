@@ -190,7 +190,7 @@
 
 <body class="p-4">
 
-    <div id="app" class="max-w-xl w-full">
+    <div id="app" class="max-w-3xl w-full">
 
         <!-- 도입 화면 (유튜브 영상) -->
         <div id="intro-screen" class="glass rounded-3xl p-10 text-center fade-in">
@@ -261,11 +261,11 @@
             </div>
 
             <div class="p-8 flex-grow flex flex-col justify-center text-center">
-                <div class="image-box">
+                <div class="image-box h-[300px]">
                     <img id="scene-img" src="" alt="scene illustration">
                 </div>
                 <p id="story-description" class="text-2xl font-black text-white leading-tight mb-8"></p>
-                <div id="choices-area" class="space-y-4"></div>
+                <div id="choices-area" class="grid grid-cols-1 md:grid-cols-2 gap-4"></div>
                 <div id="feedback-box"
                     class="hidden mt-6 p-5 rounded-2xl font-bold bg-rose-500/20 text-rose-300 border border-rose-500/50">
                 </div>
@@ -342,8 +342,6 @@
                 </div>
             </div>
         </div>
-        <button onclick="location.reload()"
-            class="w-full text-slate-400 font-bold hover:text-white transition-colors">다시 키우기</button>
     </div>
     </div>
 
