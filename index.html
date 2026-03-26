@@ -192,8 +192,24 @@
 
     <div id="app" class="max-w-xl w-full">
 
+        <!-- 도입 화면 (유튜브 영상) -->
+        <div id="intro-screen" class="glass rounded-3xl p-10 text-center fade-in">
+            <h1 class="text-3xl font-extrabold mb-6 tracking-tight text-white font-black">바람직한 스마트기기 활용 약속</h1>
+            <div class="aspect-video mb-8 rounded-2xl overflow-hidden border-2 border-white/20 shadow-2xl">
+                <iframe class="w-full h-full" src="https://www.youtube.com/embed/VE_GRpDegS4" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
+            </div>
+            <p class="text-slate-300 mb-8 leading-relaxed">
+                영상을 보고 난 후, 우리 모두 함께<br>
+                멋진 <b>스마트 가디언</b>이 되어볼까요?
+            </p>
+            <button onclick="goStart()"
+                class="btn-gradient w-full text-white font-black py-5 px-8 rounded-2xl text-xl shadow-2xl">
+                활동 시작하기
+            </button>
+        </div>
+
         <!-- 시작 화면 -->
-        <div id="start-screen" class="glass rounded-3xl p-10 text-center fade-in">
+        <div id="start-screen" class="hidden glass rounded-3xl p-10 text-center fade-in">
             <div class="mb-8 relative inline-block">
                 <div class="absolute inset-0 bg-indigo-500 blur-3xl opacity-30 rounded-full animate-pulse"></div>
                 <div class="text-7xl">⚔️</div>
@@ -318,12 +334,17 @@
                         class="btn-gradient w-full text-white font-bold py-4 rounded-xl shadow-lg">약속 등록하기</button>
                 </div>
             </div>
-            <div class="glass rounded-3xl p-6 h-80 overflow-hidden relative">
-                <div id="board-content" class="scrolling-content space-y-3"></div>
+
+            <div class="glass rounded-3xl p-8">
+                <h2 class="text-xl font-bold text-white mb-4">📢 모든 가디언의 약속</h2>
+                <div id="board-content" class="grid gap-4 max-h-[400px] overflow-y-auto pr-2 custom-scroll">
+                    <!-- 가스에서 데이터를 가져와서 채워짐 -->
+                </div>
             </div>
-            <button onclick="location.reload()"
-                class="w-full text-slate-400 font-bold hover:text-white transition-colors">다시 키우기</button>
         </div>
+        <button onclick="location.reload()"
+            class="w-full text-slate-400 font-bold hover:text-white transition-colors">다시 키우기</button>
+    </div>
     </div>
 
     <script>
@@ -331,179 +352,190 @@
 
         const STORY = {
             'morning': {
-                title: 'HOME - 07:30',
+                title: '우리 집 - 아침 7시 30분',
                 img: 'morning.png',
-                desc: '잠에서 깬 [이름], 눈을 뜨자마자 스마트폰 알림이 가득합니다. 가장 먼저 무엇을 할까요?',
+                desc: '잠에서 깬 [이름]! 머리맡에 스마트폰이 반짝거려요. 어떻게 할까요?',
                 choices: [
-                    { text: '폰은 그대로 두고 기지개를 켜며 물 한 잔 마마시기', next: 'way_school', stats: { health: +20, time: +20 } },
-                    { text: '오늘 날씨와 학교 준비물만 1분 안에 체크하기', next: 'way_school', stats: { time: +15, etic: +5 } },
-                    { text: '누운 채로 친구들이 보낸 톡 읽으며 답장하기', next: 'way_school_late', stats: { time: -20, health: -10 } },
-                    { text: '어제 못 본 알고리즘 영상 3개만 빠르게 보기', next: 'way_school_late', stats: { time: -30, health: -20, etic: -5 } }
+                    { text: '기지개를 켜고 물을 마시며 씩씩하게 일어날래요!', next: 'way_school', reason: '아침에 폰을 멀리하고 일찍 일어난 덕분에 기분이 정말 상쾌해요!', stats: { health: +20, time: +20 } },
+                    { text: '오늘 날씨와 우리 학교 준비물만 폰으로 잠깐 확인해요.', next: 'way_school', reason: '필요한 정보만 짧게 확인해서 준비할 시간이 넉넉해졌어요.', stats: { time: +15, etic: +5 } },
+                    { text: '친구들이 보낸 톡 메시지를 누워서 한참 읽어요.', next: 'way_school_late', reason: '누워서 스마트폰을 보다가 일어나는 시간이 늦어버렸어요.', stats: { time: -20, health: -10 } },
+                    { text: '어제 못 본 재미있는 영상을 보느라 늦게 일어나요.', next: 'way_school_late', reason: '재미있는 영상을 보느라 준비할 시간이 부족해 마음이 급해요.', stats: { time: -30, health: -20, etic: -5 } }
                 ]
             },
             'way_school': {
-                title: 'ON THE WAY - 08:30',
+                title: '학교 가는 길 - 아침 8시 30분',
                 img: 'walking_safety.png',
-                desc: '학교 가는 길입니다. 횡단보도 신호대기 중 옆 친구가 재미있는 영상을 보여줍니다.',
+                desc: '신호등 앞에서 친구가 스마트폰 게임을 같이 하자고 불러요. 어떡하죠?',
                 choices: [
-                    { text: '"걸어갈 때는 위험해!" 라고 말하며 폰을 가방에 넣기', next: 'class_ethics', stats: { etic: +20, health: +15 } },
-                    { text: '신호등이 바뀔 때까지 딱 5초만 같이 구경하기', next: 'class_ethics', stats: { etic: +5, health: -5 } },
-                    { text: '걸어가면서도 소리만 들으며 귀로 영상 즐기기', next: 'class_ethics', stats: { health: -15, etic: -5 } },
-                    { text: '화면에서 눈을 떼지 못한 채 횡단보도 건너기', next: 'class_ethics_late', stats: { health: -40, etic: -20, time: -10 } }
+                    { text: '"걸어갈 때는 위험해!"라고 말하며 폰을 가방에 넣어요.', next: 'class_tablet', reason: '등굣길 안전을 잘 지킨 덕분에 아무 사고 없이 학교에 도착했어요!', stats: { etic: +20, health: +15 } },
+                    { text: '초록불이 켜질 때까지만 딱 5초만 같이 구경해요.', next: 'class_tablet', reason: '잠깐만 보려 했지만, 화면을 보느라 발밑을 못 봐서 넘어질 뻔했어요.', stats: { etic: +5, health: -5 } },
+                    { text: '걸어가면서도 소리만 들으면 괜찮겠지? 이어폰을 껴요.', next: 'class_tablet', reason: '이어폰 소리 때문에 차 소리를 못 들어서 정말 위험한 상황이었어요.', stats: { health: -15, etic: -5 } },
+                    { text: '화면만 보면서 횡단보도를 조심조심 건너요.', next: 'class_tablet_late', reason: '스마트폰을 보며 걷느라 신호가 바뀐 것도 몰라 지각했어요.', stats: { health: -40, etic: -20, time: -10 } }
                 ]
             },
             'way_school_late': {
-                title: 'ON THE WAY - 08:50',
+                title: '학교 가는 길 - 아침 8시 50분',
                 img: 'walking_safety.png',
-                desc: '아침에 폰을 보느라 너무 늦었습니다! 서둘러 뛰어가는데 폰 진동이 계속 울립니다.',
+                desc: '아침에 폰을 보느라 너무 늦었어요! 뛰어가는데 주머니에서 폰이 울려요.',
                 choices: [
-                    { text: '뛰어갈 때는 안전이 제일! 폰은 무시하고 달리기', next: 'class_ethics_late', stats: { health: +10, time: -5 } },
-                    { text: '누가 보냈는지 궁금해서 뛰어가며 폰 확인하기', next: 'class_ethics_late', stats: { health: -30, etic: -15 } },
-                    { text: '너무 늦었으니 차라리 폰을 보며 천천히 걸어가기', next: 'class_ethics_late', stats: { time: -40, etic: -20 } },
-                    { text: '지각 사유를 톡으로 미리 알리며 뛰어가기', next: 'class_ethics_late', stats: { etic: +10, health: -15 } }
+                    { text: '지금은 빨리 가는 게 중요해! 폰은 무시하고 달려요.', next: 'class_tablet_late', reason: '늦었지만 안전하게 앞을 보고 뛰어서 더 늦지 않았어요.', stats: { health: +10, time: -5 } },
+                    { text: '누가 보냈는지 너무 궁금해요. 뛰면서 폰을 확인해요.', next: 'class_tablet_late', reason: '뛰면서 폰을 보다가 옆 기둥에 부딪혀서 무릎을 다쳤어요.', stats: { health: -30, etic: -15 } },
+                    { text: '이미 지각인 거, 폰을 보면서 천천히 걸어가요.', next: 'class_tablet_late', reason: '포기하고 폰만 보느라 수업이 시작된 것도 모르고 늦어버렸어요.', stats: { time: -40, etic: -20 } },
+                    { text: '"선생님 죄송해요"라고 톡을 보내면서 뛰어가요.', next: 'class_tablet_late', reason: '미리 연락은 했지만, 길에서 화면을 보는 건 여전히 위험해요.', stats: { etic: +10, health: -15 } }
                 ]
             },
-            'class_ethics': {
-                title: 'ETHICS CLASS - 09:30',
+            'class_tablet': {
+                title: '학교 교실 - 1교시 수업',
                 img: 'tablet_class.png',
-                desc: '정보 윤리 수업 시간! 태블릿을 활용해 모둠 과제를 해결해야 합니다.',
+                desc: '태블릿 PC를 나눠주셨어요. 모둠 친구들과 문제를 풀어야 해요!',
                 choices: [
-                    { text: '모둠원들과 협력하여 조사 내용만 정확히 검색하기', next: 'class_art', stats: { etic: +25, time: +15 } },
-                    { text: '내가 맡은 부분만 빠르게 하고 조용히 대기하기', next: 'class_art', stats: { etic: +15, time: +5 } },
-                    { text: '포털 사이트의 연예/게임 뉴스 클릭해보기', next: 'class_art_distracted', stats: { etic: -20, time: -10 } },
-                    { text: '학습 앱 대신 몰래 유튜브 검색창 띄우기', next: 'branch_teacher_caught', stats: { etic: -40, health: -15, time: -20 } }
+                    { text: '친구들과 의논하며 공부에 필요한 내용만 검색해요.', next: 'class_art', reason: '태블릿을 공부 도우미로 잘 활용해서 선생님께 칭찬받았어요!', stats: { etic: +25, time: +15 } },
+                    { text: '내 할 일을 빨리 끝내고 조용히 기다려요.', next: 'class_art', reason: '공부에 집중해서 태블릿 사용 시간을 잘 지켰어요.', stats: { etic: +15, time: +5 } },
+                    { text: '공부하는 척하면서 태블릿으로 연예인 사진을 봐요.', next: 'class_art_distracted', reason: '태블릿으로 다른 짓을 하다가 과제를 끝내지 못했어요.', stats: { etic: -20, time: -10 } },
+                    { text: '선생님이 안 보실 때 몰래 게임 사이트에 들어가요.', next: 'branch_teacher_caught', reason: '수업 시간에 태블릿으로 게임을 하다가 선생님께 들키고 말았어요.', stats: { etic: -40, health: -15, time: -20 } }
                 ]
             },
-            'class_ethics_late': {
-                title: 'ETHICS CLASS - 09:50',
+            'class_tablet_late': {
+                title: '학교 교실 - 1교시 수업 직전',
                 img: 'tablet_class.png',
-                desc: '지각해서 수업에 늦게 참여했습니다. 태블릿 배부 시간이 이미 지났습니다.',
+                desc: '지각해서 수업 도중 들어왔어요. 친구들은 벌써 태블릿 PC로 공부 중이에요.',
                 choices: [
-                    { text: '선생님께 사과드리고 친구 태블릿을 같이 보며 참여하기', next: 'class_art', stats: { etic: +15, time: -5 } },
-                    { text: '태블릿이 없으니 그냥 책상에 엎드려 자기', next: 'class_art_distracted', stats: { etic: -25, health: +10 } },
-                    { text: '몰래 숨겨온 내 스마트폰으로 조사하는 척하기', next: 'branch_teacher_caught', stats: { etic: -35, time: -20 } },
-                    { text: '남은 시간만이라도 열정적으로 필기에 참여하기', next: 'class_art', stats: { time: +20, etic: +10 } }
+                    { text: '선생님께 사과하고, 친구 옆에서 같이 태블릿을 봐요.', next: 'class_art', reason: '늦었지만 솔직하게 말하고 친구와 태블릿을 바르게 사용했어요.', stats: { etic: +15, time: -5 } },
+                    { text: '내 태블릿이 없으니까 그냥 책상에 엎드려요.', next: 'class_art_distracted', reason: '지각한 마음을 달래지 못하고 공부할 기회를 놓쳐버렸어요.', stats: { etic: -25, health: +10 } },
+                    { text: '가방 속 내 스마트폰을 꺼내서 몰래 공부하는 척해요.', next: 'branch_teacher_caught', reason: '태블릿 대신 개인 폰을 몰래 꺼내 쓰다가 선생님께 혼이 났어요.', stats: { etic: -35, time: -20 } },
+                    { text: '남은 시간만이라도 학습 지침에 따라 열심히 참여해요.', next: 'class_art', reason: '늦게 시작했지만 태블릿 사용 약속을 지키며 열심히 공부했어요.', stats: { time: +20, etic: +10 } }
                 ]
             },
             'class_art': {
-                title: 'ART CLASS - 11:00',
+                title: '학교 교실 - 3교시 미술 시간',
                 img: 'digital_art.png',
-                desc: '미술 시간! 디지털 드로잉 앱으로 나만의 가디언을 그리는 시간입니다.',
+                desc: '태블릿 컴퓨터로 "나만의 가디언"을 예쁘게 그리는 시간이에요!',
                 choices: [
-                    { text: '창의력을 발휘해 나만의 멋진 캐릭터 완성하기', next: 'lunch', stats: { time: +25, etic: +15 } },
-                    { text: '그림 도구가 신기해서 이것저것 효과만 써보기', next: 'lunch', stats: { time: +10, health: -5 } },
-                    { text: '웹툰 그림을 띄워놓고 그대로 따라 그리기(트레이싱)', next: 'lunch', stats: { etic: +5, time: -5 } },
-                    { text: '그림은 안 그리고 다른 친구들 작품 구경하러 다니기', next: 'lunch', stats: { etic: -10, health: +5 } }
+                    { text: '상상력을 발휘해서 정말 멋진 캐릭터를 그려내요.', next: 'lunch', reason: '디지털 도구로 멋진 작품을 만들어서 성취감이 최고예요!', stats: { time: +25, etic: +15 } },
+                    { text: '그리기 도구가 신기해서 마구 눌러보며 즐거워해요.', next: 'lunch', reason: '재미있게 그렸지만, 화면을 너무 오래 봐서 눈이 조금 피로해요.', stats: { time: +10, health: -5 } },
+                    { text: '내가 그리기 귀찮아서 인터넷에 있는 그림을 따라 해요.', next: 'lunch', reason: '인터넷 그림을 베끼느라 나만의 생각은 기르지 못했어요.', stats: { etic: +5, time: -5 } },
+                    { text: '그림은 안 그리고 태블릿으로 다른 친구들 작품만 봐요.', next: 'lunch', reason: '내 작품을 만들지 않고 시간만 보내서 아쉬움이 남아요.', stats: { etic: -10, health: +5 } }
                 ]
             },
             'class_art_distracted': {
-                title: 'ART CLASS - 11:00',
+                title: '학교 교실 - 3교시 미술 시간',
                 img: 'digital_art.png',
-                desc: '그림 그리기가 귀찮아진 [이름], 자꾸만 폰의 게임 아이콘이 생각납니다.',
+                desc: '그림은 안 그려지고 자꾸만 어제 하던 게임이 생각나요. 어쩌죠?',
                 choices: [
-                    { text: '다시 마음을 다잡고 한 선이라도 정성껏 그리기', next: 'lunch', stats: { etic: +20, time: +15 } },
-                    { text: '선생님 몰래 아주 잠깐만 게임 화면 띄워보기', next: 'branch_teacher_caught', stats: { etic: -30, health: -15, time: -10 } },
-                    { text: '낙서만 끄적거리며 쉬는 시간만 기다리기', next: 'lunch', stats: { time: -15, etic: -10 } },
-                    { text: '친구에게 재미있는 앱이 있는지 물어보기', next: 'lunch', stats: { etic: -15, health: -5 } }
+                    { text: '다시 기운을 내서 예쁜 선을 하나라도 그려봐요.', next: 'lunch', reason: '유혹을 이겨내고 스스로의 힘으로 작품을 완성했어요!', stats: { etic: +20, time: +15 } },
+                    { text: '선생님 몰래 아주 잠깐만 게임 앱을 켜봐요.', next: 'branch_teacher_caught', reason: '미술 시간에 몰래 게임을 하다가 태블릿을 압수당하게 됐어요.', stats: { etic: -30, health: -15, time: -10 } },
+                    { text: '낙서만 하다가 쉬는 시간 종이 울리기만 기다려요.', next: 'lunch', reason: '공부에 집중하지 못해서 오늘 미술 시간은 아무것도 남지 않았어요.', stats: { time: -15, etic: -10 } },
+                    { text: '친구에게 "나랑 이따 게임 파티 할래?"라고 물어봐요.', next: 'lunch', reason: '수업 시간에 게임 이야기만 하다가 선생님께 주의를 받았어요.', stats: { etic: -15, health: -5 } }
                 ]
             },
             'branch_teacher_caught': {
-                title: 'COUNSELING - 12:00',
+                title: '상담실 - 쉬는 시간',
                 img: 'reflection.png',
-                desc: '결국 수업 중 스마트폰 사용이 발각되었습니다. [이름]은(는) 큰 꾸중을 들었습니다.',
+                desc: '수업 시간에 스마트기기를 잘못 사용해서 선생님과 이야기를 나눠요.',
                 choices: [
-                    { text: '진심으로 반성하고 방과 후에 남아서 상담하기', next: 'school_stay', stats: { etic: +25, health: -10 } },
-                    { text: '다른 애들도 다 하는데 나만 그런다며 대들기', next: 'school_stay', stats: { etic: -50, health: -20 } },
-                    { text: '죄송하다고 빌고 당분간 폰을 맡기겠다고 하기', next: 'school_stay', stats: { etic: +40, time: +10 } },
-                    { text: '반성문을 대충 채워서 빨리 넘기려고 하기', next: 'school_stay', stats: { etic: -30, time: -10 } }
+                    { text: '잘못을 인정하고 "나만의 사용 약속"을 새로 정해요.', next: 'school_stay', reason: '솔직하게 말하고 약속을 다시 세운 덕분에 선생님도 믿어주셨어요!', stats: { etic: +25, health: -10 } },
+                    { text: '"다른 애들도 다 하는데 왜 저만 혼나요?"라고 대들어요.', next: 'school_stay', reason: '화만 내다가 선생님과의 신뢰가 더 깨지고 마음도 속상해졌어요.', stats: { etic: -50, health: -20 } },
+                    { text: '당분간 스마트기기를 안 하겠다고 종이에 크게 써요.', next: 'school_stay', reason: '스스로를 절제하겠다는 다짐을 해서 가디언 등급이 올랐어요.', stats: { etic: +40, time: +10 } },
+                    { text: '죄송하다고 말만 하고 대충 넘어가려고 해요.', next: 'school_stay', reason: '진심으로 반성하지 않아서 나중에 또 같은 실수를 할 것 같아요.', stats: { etic: -30, time: -10 } }
                 ]
             },
             'lunch': {
-                title: 'LUNCH - 12:30',
+                title: '학교 식당 - 점심 시간',
                 img: 'lunch.png',
-                desc: '맛있는 급식 시간! 식당 안의 TV에서 재미있는 영상이 나옵니다.',
+                desc: '맛있는 급식 시간! 식당의 큰 TV에서 재미있는 뉴스가 나오고 있어요.',
                 choices: [
-                    { text: '영상보다 친구와의 대화에 집중하며 맛있게 먹기', next: 'branch_after', stats: { health: +20, etic: +15 } },
-                    { text: '영상은 힐끗 보되, 식사 예절은 꼭 지키기', next: 'branch_after', stats: { etic: +10, health: +5 } },
-                    { text: '영상에 정신이 팔려 입에 밥이 있는지 모를 정도', next: 'branch_after', stats: { health: -15, etic: -15 } },
-                    { text: '밥을 다 먹고 운동장에서 신나게 뛰어놀기', next: 'branch_after', stats: { health: +35, time: +10 } }
+                    { text: '뉴스보다 친구와 얼굴을 보며 즐겁게 대화하며 먹어요.', next: 'branch_after', reason: '친구와 수다 떨며 먹어서 소화도 잘되고 우정도 깊어졌어요!', stats: { health: +20, etic: +15 } },
+                    { text: '뉴스를 보면서 천천히 식사 예절을 지켜요.', next: 'branch_after', reason: '뉴스 내용도 알고 밥도 깨끗이 다 비웠어요.', stats: { etic: +10, health: +5 } },
+                    { text: '화면만 쳐다보느라 밥이 코로 들어가는지 모를 정도로 먹어요.', next: 'branch_after', reason: 'TV 보느라 밥을 제대로 씹지 않아서 배가 조금 아파요.', stats: { health: -15, etic: -15 } },
+                    { text: '밥을 초스피드로 다 먹고 운동장에서 신나게 뛰놀아요.', next: 'branch_after', reason: '스마트기기 대신 몸으로 놀아서 건강해진 기분이에요!', stats: { health: +35, time: +10 } }
                 ]
             },
             'school_stay': {
-                title: 'AFTER SCHOOL - 16:00',
+                title: '교실 - 방과 후',
                 img: 'reflection.png',
-                desc: '방과 후 남은 교실. 선생님과 1:1로 스마트 가디언 약속을 다시 세웁니다.',
+                desc: '방과 후에 남아서 "스마트 가디언 약속"을 다시 세우기로 했어요.',
                 choices: [
-                    { text: '나만의 스마트폰 사용 십계명을 정성껏 만들기', next: 'way_home', stats: { etic: +40, time: +30 } },
-                    { text: '내일부턴 정말 조심하겠다고 다짐하며 일찍 귀가하기', next: 'way_home', stats: { etic: +20, health: +10 } },
-                    { text: '선생님께 스마트폰의 장단점에 대해 질문하기', next: 'way_home', stats: { etic: +30, time: +15 } },
-                    { text: '반성하는 척하면서 창밖 자유로운 친구들 부러워하기', next: 'way_home', stats: { etic: -20, health: -10 } }
+                    { text: '내가 꼭 지킬 수 있는 사용 수칙 3가지를 아주 정성껏 써요.', next: 'way_home', reason: '스스로 약속을 잘 만든 덕분에 앞으로는 걱정 없어요!', stats: { etic: +40, time: +30 } },
+                    { text: '오늘의 행동을 반성하며 폰을 멀리할 준비를 해요.', next: 'way_home', reason: '반성을 통해 바른 스마트 가디언으로 성장하기 시작했어요.', stats: { etic: +20, health: +10 } },
+                    { text: '왜 스마트기기를 너무 오래 쓰면 안 되는지 선생님께 물어봐요.', next: 'way_home', reason: '올바른 사용법을 배워서 이제는 똑똑하게 기기를 쓸 수 있어요.', stats: { etic: +30, time: +15 } },
+                    { text: '빨리 가고 싶어서 대충 아무 말이나 적어서 내요.', next: 'way_home', reason: '반성하지 않아서 마음속엔 여전히 나쁜 습관이 남아있어요.', stats: { etic: -20, health: -10 } }
                 ]
             },
             'branch_after': {
-                title: 'AFTER SCHOOL - 16:00',
+                title: '집으로 가는 길 - 방과 후',
                 img: 'playground.png',
-                desc: '방과 후! [이름]에게는 선택의 폭이 넓습니다. 어디로 가볼까요?',
+                desc: '학교가 끝났어요! [이름]은 이제 어디로 가볼까요?',
                 choices: [
-                    { text: '📚 학원 필드 (실력을 쌓으러 가기!)', next: 'aca' },
-                    { text: '⚽ 놀이터 필드 (신체의 에너지를 발산하기!)', next: 'play' },
-                    { text: '🏠 집으로 바로 가기 (휴식과 복습)', next: 'way_home' },
-                    { text: '🍿 편의점 필드 (친구와 간식 먹으며 놀기)', next: 'play' }
+                    { text: '컴퓨터로 공부하러 가기! (학원 컴퓨터실)', next: 'aca_computer', reason: '공부하러 갔지만 컴퓨터로 게임하고 싶은 마음을 참아야 해요.' },
+                    { text: '운동장에서 공 차기! (놀이터 가기)', next: 'play_ground', reason: '땀 흘리며 노는 건 폰 게임보다 훨씬 즐거워요!' },
+                    { text: '친구랑 편의점에서 간식 먹기! (편의점 들르기)', next: 'store_fun', reason: '맛있게 먹으며 친구와 직접 이야기 나누는 법을 배워요!' },
+                    { text: '오늘은 일찍 집에 가서 숙제하기! (우리 집 가기)', next: 'way_home', reason: '숙제를 미리 끝내면 나중에 떳떳하게 스마트기기를 쓸 수 있어요.' }
                 ]
             },
-            'aca': {
-                title: 'ACADEMY - 17:00',
+            'aca_computer': {
+                title: '학원 컴퓨터실 - 오후 5시',
                 img: 'academy.png',
-                desc: '스터디 타임! 옆 친구가 수학 문제를 풀다가 모르는 것을 폰으로 검색합니다.',
+                desc: '컴퓨터로 검색하며 공부하는 시간이에요. 그런데 옆 친구가 게임을 하고 있어요!',
                 choices: [
-                    { text: '폰 검색보다는 선생님께 질문하라고 추천하기', next: 'way_home', stats: { etic: +20, health: +5 } },
-                    { text: '나도 덩달아 문제 풀이 대신 유튜브 강좌 검색하기', next: 'way_home', stats: { time: +10, health: -10 } },
-                    { text: '검색하는 척하면서 친구에게 답장 보내기', next: 'way_home', stats: { time: -20, etic: -15 } },
-                    { text: '알림이라도 울릴까 봐 폰을 가방 깊숙이 넣기', next: 'way_home', stats: { time: +30, etic: +15 } }
+                    { text: '"숙제부터 해야지!"라고 말해주고 공부에 집중해요.', next: 'way_home', reason: '컴퓨터 유혹을 이겨내고 숙제를 완벽하게 끝냈어요!', stats: { time: +25, etic: +20 } },
+                    { text: '게임 소리가 안 들리게 귀마개를 하고 공부해요.', next: 'way_home', stats: { time: +30, etic: +10 }, reason: '집중력을 발휘해서 컴퓨터를 공부 도구로만 잘 썼어요.' },
+                    { text: '친구랑 같이 딱 한 판만 게임 대결을 해요.', next: 'way_home', reason: '게임을 하느라 숙제 시간은 부족해지고 머리도 조금 아파요.', stats: { time: -30, health: -15 } },
+                    { text: '선생님 몰래 다른 인터넷 사이트를 계속 돌아다녀요.', next: 'way_home', reason: '컴퓨터로 공부는 안 하고 연관 검색 영상만 보다가 시간이 다 갔어요.', stats: { time: -40, health: -25, etic: -20 } }
                 ]
             },
-            'play': {
-                title: 'PLAYGROUND - 17:00',
+            'play_ground': {
+                title: '놀이터 - 오후 5시',
                 img: 'playground.png',
-                desc: '놀이터에 모인 친구들! 틱톡 챌린지 영상을 찍자고 합니다.',
+                desc: '놀이터에 모인 친구들! 틱톡 챌린지 영상을 찍자고 스마트폰을 꺼내요.',
                 choices: [
-                    { text: '영상 찍기보다는 술래잡기를 하자고 제안하기', next: 'way_home', stats: { health: +35, etic: +10 } },
-                    { text: '짧고 굵게 춤 연습만 하고 영상 한 개만 찍기', next: 'way_home', stats: { health: +15, etic: +5 } },
-                    { text: '예쁜 배경을 찾아 폰만 들고 1시간 내내 촬영하기', next: 'way_home', stats: { health: -20, time: -30, etic: -10 } },
-                    { text: '친구들이 찍는 동안 옆에서 벤치에 앉아 폰 게임하기', next: 'way_home', stats: { health: -30, time: -40 } }
+                    { text: '"영상 찍기보다 술래잡기를 하자!"라고 제안해요.', next: 'way_home', reason: '화면만 보는 대신 몸으로 놀아서 눈도 건강해지고 정말 재미있었어요!', stats: { health: +35, etic: +10 } },
+                    { text: '짧고 굵게 춤 연습만 하고 영상은 딱 한 개만 찍어요.', next: 'way_home', reason: '시간을 정해놓고 약속한 만큼만 폰을 잘 사용했어요.', stats: { health: +15, etic: +5 } },
+                    { text: '예쁜 배경을 찾아 폰을 들고 한 시간 넘게 촬영해요.', next: 'way_home', reason: '영상 찍느라 다리는 아프고, 정작 친구랑은 대화를 못 했어요.', stats: { health: -20, time: -30, etic: -10 } },
+                    { text: '구석 벤치에 앉아서 혼자 유튜브 영상만 봐요.', next: 'way_home', reason: '친구들이랑 같이 나왔는데 혼자 폰만 봐서 친구들이 서운해해요.', stats: { health: -30, time: -40 } }
+                ]
+            },
+            'store_fun': {
+                title: '편의점 - 오후 5시',
+                img: 'playground.png',
+                desc: '친구와 아이스크림을 먹으며 폰으로 게임 방송을 보려고 해요.',
+                choices: [
+                    { text: '폰을 내려놓고 친구랑 오늘 먹은 게 맛있는지 대화해요.', next: 'way_home', reason: '맛있는 음식과 친구와의 대화! 폰 없이도 너무 행복해요.', stats: { etic: +20, health: +10 } },
+                    { text: '먹을 때까지만 딱 10분만 폰을 같이 봐요.', next: 'way_home', reason: '약속 시간을 지키려 노력했지만 맛을 잘 못 느껴서 아쉬워요.', stats: { etic: +10, health: +5 } },
+                    { text: '서로 자기가 좋아하는 영상만 보느라 대화가 끊겨요.', next: 'way_home', reason: '친구가 옆에 있는데 각자 폰만 보니 마음이 조금 멀어진 것 같아요.', stats: { etic: -20, time: -15 } },
+                    { text: '계속 영상을 보느라 아이스크림이 다 녹아버렸어요.', next: 'way_home', reason: '스마트폰에 너무 빠져서 정작 중요한 간식 시간을 망쳤어요.', stats: { time: -30, health: -10 } }
                 ]
             },
             'way_home': {
-                title: 'GOING HOME - 19:00',
+                title: '집으로 가는 길 - 저녁 7시',
                 img: 'night_walking.png',
-                desc: '벌써 저녁이네요. 어두워진 길을 걸어 집으로 갑니다. 폰이 반짝입니다.',
+                desc: '벌써 저녁이에요. 어둑어둑한 길을 걸어 집으로 가요. 가방 안의 폰이 울려요.',
                 choices: [
-                    { text: '밤길은 위험해! 폰은 가방에 넣고 앞만 보고 걷기', next: 'dinner', stats: { health: +30, etic: +10 } },
-                    { text: '가족들이 걱정할까 봐 "지금 가요" 라고 한 줄만 보내기', next: 'dinner', stats: { etic: +20, time: +10 } },
-                    { text: '웹소설이 너무 궁금해서 한 페이지만 읽으며 걷기', next: 'dinner', stats: { health: -40, etic: -15 } },
-                    { text: '폰 후레쉬를 밝히며 발밑만 쳐다보고 걷기', next: 'dinner', stats: { health: -25, time: -5 } }
+                    { text: '밤길은 위험하니까 폰은 무시하고 앞을 보며 걸어요.', next: 'dinner', reason: '주변을 살피며 안전하게 걸어서 무사히 집에 도착했어요!', stats: { health: +30, etic: +10 } },
+                    { text: '부모님이 걱정하실 테니 "지금 가요"라고 한 줄만 답장해요.', next: 'dinner', reason: '필요한 연락만 짧게 하고 다시 폰을 가방에 잘 넣었어요.', stats: { etic: +20, time: +10 } },
+                    { text: '궁금한 만화가 업데이트됐나 보면서 걸어가요.', next: 'dinner', reason: '어두운 길에서 폰을 보느라 발이 꼬여서 크게 넘어질 뻔했어요.', stats: { health: -40, etic: -15 } },
+                    { text: '무서우니까 폰 후레쉬를 밝히고 바닥만 보며 걸어요.', next: 'dinner', reason: '바닥만 보다가 전봇대에 부딪칠 뻔한 아찔한 상황이었어요.', stats: { health: -25, time: -5 } }
                 ]
             },
             'dinner': {
-                title: 'DINNER - 19:30',
+                title: '우리 집 식탁 - 저녁 7시 30분',
                 img: 'dinner.png',
-                desc: '가족 식사 시간! 오늘 있었던 일을 부모님께서 물어보십니다.',
+                desc: '맛있는 저녁 시간! 식탁 옆으로 큰 TV가 켜져 있어요.',
                 choices: [
-                    { text: '폰을 멀리 두고 학교에서 있던 즐거운 일 말하기', next: 'night', stats: { etic: +30, health: +15 } },
-                    { text: '부모님께 나만의 스마트폰 약속을 선언하기', next: 'night', stats: { etic: +40, health: +10 } },
-                    { text: '식탁에서 폰으로 내일 먹고 싶은 메뉴 보여드리기', next: 'night', stats: { etic: +10, health: +5 } },
-                    { text: '빨리 먹고 방에서 폰을 하고 싶어 서두르기', next: 'night', stats: { etic: -20, health: -15 } }
+                    { text: 'TV를 끄고 부모님과 오늘 있었던 즐거운 일을 말해요.', next: 'night', reason: '가족과 마주 보며 이야기 나누니 밥이 정말 꿀맛이에요!', stats: { etic: +30, health: +15 } },
+                    { text: '부모님께 오늘 세운 "스마트 가디언 약속"을 말씀드려요.', next: 'night', reason: '약속을 자랑했더니 부모님께서 정말 기특하다고 칭찬해주셨어요!', stats: { etic: +40, health: +10 } },
+                    { text: 'TV 뉴스만 보면서 조용히 밥을 먹어요.', next: 'night', reason: '대화는 적었지만 밥은 천천히 꼭꼭 씹어 먹었어요.', stats: { etic: +10, health: +5 } },
+                    { text: '빨리 먹고 방에 가서 태블릿 하고 싶어서 서둘러요.', next: 'night', reason: '빨리 먹느라 급하게 삼켜서 가슴이 답답하고 소화가 안 돼요.', stats: { etic: -20, health: -15 } }
                 ]
             },
             'night': {
-                title: 'BEDTIME - 22:00',
+                title: '나의 방 - 밤 10시',
                 img: 'night.png',
-                desc: '오늘의 마지막 선택입니다. [이름]의 방, 불이 꺼졌습니다.',
+                desc: '이제 자야 할 시간이에요. 머리맡에 태블릿 PC가 놓여 있어요.',
                 choices: [
-                    { text: '폰은 거실 충전소에 두고 깊은 잠에 빠져들기', next: 'end', stats: { health: +50, time: +40 } },
-                    { text: '머리맡에 두되, 방해 금지 모드를 꼭 설정하기', next: 'end', stats: { health: +30, time: +20 } },
-                    { text: '이불 속에서 몰래 한 판만 더... (결국 새벽 1시)', next: 'end', stats: { health: -60, time: -50, etic: -25 } },
-                    { text: '내일 아침 알람 확인을 핑계로 계속 폰 들여다보기', next: 'end', stats: { health: -40, time: -30 } }
+                    { text: '태블릿은 거실에 딱 두고 방에 들어와 꿀잠을 자요.', next: 'end', reason: '스마트기기 없이 푹 자서 내일은 더 튼튼해질 거예요!', stats: { health: +50, time: +40 } },
+                    { text: '내일 알람만 맞추고 태블릿을 멀리 치워요.', next: 'end', reason: '잠자기 전 기기를 안 써서 눈도 편안하고 꿈나라도 즐거워요.', stats: { health: +30, time: +20 } },
+                    { text: '이불 속에서 몰래 딱 한 판만 더... (새벽 1시가 됐어요!)', next: 'end', reason: '늦게까지 태블릿을 봐서 눈이 충혈되고 아침에 못 일어날 것 같아요.', stats: { health: -60, time: -50, etic: -25 } },
+                    { text: '잠이 안 오니까 소셜 미디어 영상들을 한참 구경해요.', next: 'end', reason: '화면의 밝은 빛 때문에 잠이 다 달아나고 머리가 띵해요.', stats: { health: -40, time: -30 } }
                 ]
             }
         };
@@ -512,6 +544,11 @@
         let stats = { time: 50, etic: 50, health: 100 };
         let charName = "가디언";
         let finalRank = 'F';
+
+        function goStart() {
+            document.getElementById('intro-screen').classList.add('hidden');
+            document.getElementById('start-screen').classList.remove('hidden');
+        }
 
         function startGame() {
             const input = document.getElementById('char-name').value.trim();
@@ -526,12 +563,16 @@
             return str.replace(/\[이름\]/g, charName);
         }
 
-        function render() {
+        function render(reason = "") {
             if (current === 'end') { showResult(); return; }
             const s = STORY[current];
             updateBars();
             document.getElementById('scene-title').innerText = s.title || "OOPS";
-            document.getElementById('story-description').innerText = t(s.desc);
+
+            // 이유와 설명을 합치고 이름 치환 적용
+            const mainDesc = t(s.desc);
+            const fullDesc = reason ? `💡 ${t(reason)}\n\n${mainDesc}` : mainDesc;
+            document.getElementById('story-description').innerText = fullDesc;
 
             const imgEl = document.getElementById('scene-img');
             if (s.img) {
@@ -553,7 +594,8 @@
                 d.innerText = t(c.text);
                 d.onclick = () => {
                     if (c.stats) for (let k in c.stats) stats[k] += c.stats[k];
-                    current = c.next; render();
+                    current = c.next;
+                    render(c.reason || ""); // 선택지에 담긴 이유를 다음 장면으로 전달
                 };
                 area.appendChild(d);
             });
