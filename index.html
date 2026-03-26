@@ -261,6 +261,10 @@
                 class="btn-gradient w-full text-white font-black py-5 px-8 rounded-2xl text-xl shadow-2xl">
                 활동 시작하기
             </button>
+            <button onclick="showPledge('intro')"
+                class="mt-6 text-slate-400 font-bold hover:text-white transition-all underline text-sm block mx-auto">
+                다른 친구들의 다짐 게시판 구경하기
+            </button>
         </div>
 
         <!-- 시작 화면 -->
@@ -431,8 +435,13 @@
         </div>
 
         <!-- 게시판 -->
-        <div id="pledge-screen" class="hidden space-y-6 fade-in pb-10">
-            <div class="glass rounded-3xl p-8">
+        <div id="pledge-screen" class="hidden space-y-6 fade-in pb-10 max-w-3xl mx-auto">
+            <div id="board-back-nav" class="hidden flex justify-start">
+                <button onclick="closeBoard()" class="text-slate-400 hover:text-white font-bold flex items-center gap-2">
+                    ← 돌아가기
+                </button>
+            </div>
+            <div id="pledge-input-section" class="glass rounded-3xl p-8">
                 <h2 class="text-2xl font-black text-white mb-6">🤝 나의 바람직한 스마트기기 활용 약속</h2>
                 <div class="space-y-4">
                     <div class="grid grid-cols-2 gap-4">
@@ -733,14 +742,17 @@
 
             area.innerHTML = ''; retry.classList.add('hidden'); feed.classList.add('hidden');
 
-            s.choices.forEach(c => {
+            // 선택지 셔플 (랜덤 순서)
+            const shuffledChoices = [...s.choices].sort(() => Math.random() - 0.5);
+
+            shuffledChoices.forEach(c => {
                 const d = document.createElement('div');
                 d.className = 'glass p-5 rounded-2xl font-bold text-white cursor-pointer hover:bg-white/10 transition-all border border-white/5';
                 d.innerText = t(c.text);
                 d.onclick = () => {
                     if (c.stats) for (let k in c.stats) stats[k] += c.stats[k];
                     current = c.next;
-                    render(c.reason || ""); // 선택지에 담긴 이유를 다음 장면으로 전달
+                    render(c.reason || ""); 
                 };
                 area.appendChild(d);
             });
@@ -956,10 +968,27 @@
             } catch (e) { }
         }
 
-        function showPledge() {
-            document.getElementById('result-screen').classList.add('hidden');
+        let returnScreen = 'result-screen';
+        function showPledge(from = 'result-screen') {
+            returnScreen = from === 'intro' ? 'intro-screen' : 'result-screen';
+            
+            // 프리뷰 모드(도입부에서 접근)인 경우 입력창 숨기기
+            if (from === 'intro') {
+                document.getElementById('pledge-input-section').classList.add('hidden');
+                document.getElementById('board-back-nav').classList.remove('hidden');
+            } else {
+                document.getElementById('pledge-input-section').classList.remove('hidden');
+                document.getElementById('board-back-nav').classList.add('hidden');
+            }
+
+            document.getElementById(returnScreen).classList.add('hidden');
             document.getElementById('pledge-screen').classList.remove('hidden');
             loadBoard();
+        }
+
+        function closeBoard() {
+            document.getElementById('pledge-screen').classList.add('hidden');
+            document.getElementById(returnScreen).classList.remove('hidden');
         }
 
         async function submitPledge() {
