@@ -515,9 +515,9 @@
                 desc: '신호등 앞에서 친구가 스마트폰 게임을 같이 하자고 불러요. 어떡하죠?',
                 choices: [
                     { text: '"걸어갈 때는 위험해!"라고 말하며 폰을 가방에 넣어요.', next: 'class_tablet', reason: '등굣길 안전을 잘 지킨 덕분에 아무 사고 없이 학교에 도착했어요!', stats: { etic: +20, health: +15 } },
-                    { text: '초록불이 켜질 때까지만 친구와 같이 구경해요.', next: 'class_tablet', reason: '잠깐만 보려 했지만, 화면을 보느라 발밑을 못 봐서 넘어질 뻔했어요.', stats: { etic: +5, health: -5 } },
-                    { text: '걸어가면서도 소리만 들으면 괜찮겠지? 이어폰을 껴요.', next: 'class_tablet', reason: '이어폰 소리 때문에 차 소리를 못 들어서 정말 위험한 상황이었어요.', stats: { health: -15, etic: -5 } },
-                    { text: '화면만 보면서 횡단보도를 조심조심 건너요.', next: 'class_tablet_late', reason: '스마트폰을 보며 걷느라 신호가 바뀐 것도 몰라 지각했어요.', stats: { health: -40, etic: -20, time: -10 } }
+                    { text: '초록불이 켜질 때까지만 친구와 같이 구경해요.', next: 'class_tablet', reason: '잠깐만 보려 했지만, 길가에서 폰을 보면 주변을 살피기 힘들어 위험해요.', stats: { etic: -5, health: -10 } },
+                    { text: '걸어가면서도 소리만 들으면 괜찮겠지? 이어폰을 껴요.', next: 'class_tablet', reason: '이어폰 소리 때문에 차 소리를 못 들어서 정말 위험한 상황이었어요.', stats: { health: -20, etic: -10 } },
+                    { text: '화면만 보면서 횡단보도를 조심조심 건너요.', next: 'class_tablet_late', reason: '스마트폰을 보며 걷느라 신호가 바뀐 것도 몰라 지각했어요.', stats: { health: -50, etic: -25, time: -15 } }
                 ]
             },
             'way_school_late': {
@@ -591,10 +591,10 @@
                 img: 'lunch.png',
                 desc: '맛있는 급식 시간! 식당의 큰 TV에서 재미있는 유튜브 영상이 나오고 있어요.',
                 choices: [
-                    { text: '유튜브 대신 친구와 얼굴을 보며 즐겁게 대화하며 먹어요.', next: 'branch_after', reason: '친구와 수다 떨며 먹어서 소화도 잘되고 우정도 깊어졌어요!', stats: { health: +20, etic: +15 } },
-                    { text: '유튜브를 보면서 천천히 식사 예절을 지켜요.', next: 'branch_after', reason: '영상 내용도 알고 밥도 깨끗이 다 비웠어요.', stats: { etic: +10, health: +5 } },
-                    { text: '화면만 쳐다보느라 밥이 코로 들어가는지 모를 정도로 먹어요.', next: 'branch_after', reason: '유튜브 보느라 밥을 제대로 씹지 않아서 배가 조금 아파요.', stats: { health: -15, etic: -15 } },
-                    { text: '밥을 초스피드로 다 먹고 운동장에서 신나게 뛰놀아요.', next: 'branch_after', reason: '스마트기기 대신 몸으로 놀아서 건강해진 기분이에요!', stats: { health: +35, time: +10 } }
+                    { text: '유튜브 대신 친구와 얼굴을 보며 즐겁게 대화하며 먹어요.', next: 'branch_after', reason: '친구와 수다 떨며 먹어서 소화도 잘되고 우정도 깊어졌어요!', stats: { health: +30, etic: +20 } },
+                    { text: '유튜브를 보면서 천천히 식사 예절을 지켜요.', next: 'branch_after', reason: '영상에 정신이 팔려 친구와 대화할 기회를 놓치고 말았어요.', stats: { etic: -10, health: 0 } },
+                    { text: '화면만 쳐다보느라 밥이 코로 들어가는지 모를 정도로 먹어요.', next: 'branch_after', reason: '유튜브 보느라 밥을 제대로 씹지 않아서 배가 조금 아파요.', stats: { health: -20, etic: -20 } },
+                    { text: '밥을 초스피드로 다 먹고 운동장에서 신나게 뛰놀아요.', next: 'branch_after', reason: '스마트기기 대신 몸으로 놀아서 건강해진 기분이에요!', stats: { health: +40, time: +20 } }
                 ]
             },
             'school_stay': {
@@ -668,10 +668,10 @@
                 img: 'dinner.png',
                 desc: '맛있는 저녁 시간! 식탁 옆으로 큰 TV가 켜져 있어요.',
                 choices: [
-                    { text: 'TV를 끄고 부모님과 오늘 있었던 즐거운 일을 말해요.', next: 'night', reason: '가족과 마주 보며 이야기 나누니 밥이 정말 꿀맛이에요!', stats: { etic: +30, health: +15 } },
-                    { text: '부모님께 오늘 세운 "스마트 가디언 약속"을 말씀드려요.', next: 'night', reason: '약속을 자랑했더니 부모님께서 정말 기특하다고 칭찬해주셨어요!', stats: { etic: +40, health: +10 } },
-                    { text: 'TV 뉴스만 보면서 조용히 밥을 먹어요.', next: 'night', reason: '대화는 적었지만 밥은 천천히 꼭꼭 씹어 먹었어요.', stats: { etic: +10, health: +5 } },
-                    { text: '빨리 먹고 방에 가서 태블릿하고 싶어서 서둘러요.', next: 'night', reason: '빨리 먹느라 급하게 삼켜서 가슴이 답답하고 소화가 안 돼요.', stats: { etic: -20, health: -15 } }
+                    { text: 'TV를 끄고 부모님과 오늘 있었던 즐거운 일을 말해요.', next: 'night', reason: '가족과 마주 보며 이야기 나누니 밥이 정말 꿀맛이에요!', stats: { etic: +40, health: +20 } },
+                    { text: '부모님께 오늘 세운 "스마트 가디언 약속"을 말씀드려요.', next: 'night', reason: '약속을 자랑했더니 부모님께서 정말 기특하다고 칭찬해주셨어요!', stats: { etic: +50, health: +15 } },
+                    { text: 'TV 뉴스만 보면서 조용히 밥을 먹어요.', next: 'night', reason: '밥을 다 먹을 때까지 가족과 한마디도 나누지 못해 서운해요.', stats: { etic: -10, health: 0 } },
+                    { text: '빨리 먹고 방에 가서 태블릿하고 싶어서 서둘러요.', next: 'night', reason: '빨리 먹느라 급하게 삼켜서 가슴이 답답하고 소화가 안 돼요.', stats: { etic: -30, health: -20 } }
                 ]
             },
             'night': {
@@ -797,7 +797,8 @@
             document.getElementById('c-stat-health').innerText = stats.health + '%';
 
             // 랭크 기록 및 버튼 처리
-            recordRankOnly(rank);
+            await recordRankOnly(rank);
+            
             const commitBtn = document.getElementById('commit-btn');
             const retryBtn = document.getElementById('retry-btn-result');
 
@@ -809,7 +810,8 @@
                 retryBtn.classList.remove('hidden');
             }
 
-            fetchStats();
+            // 기록 후 잠시 대기하여 반영 시간 확보 후 스태츠 로드
+            setTimeout(fetchStats, 500);
         }
 
         let modalCallback = null;
@@ -829,11 +831,11 @@
             if (!SCRIPT_URL) return;
             try {
                 // 등급만 따로 기록 (Pledge 없이)
-                fetch(SCRIPT_URL, {
+                await fetch(SCRIPT_URL, {
                     method: 'POST', mode: 'no-cors',
                     body: JSON.stringify({ name: charName, rank: rank, type: 'rank_only' })
                 });
-            } catch (e) { }
+            } catch (e) { console.error('Rank recording failed:', e); }
         }
 
         let checkedRules = [false, false, false, false, false];
@@ -945,13 +947,15 @@
 
         async function fetchStats() {
             if (!SCRIPT_URL) return;
+            const area = document.getElementById('stats-area');
             try {
                 const res = await fetch(SCRIPT_URL);
                 const data = await res.json();
                 const s = data.stats;
+                if (!s) return;
                 document.getElementById('total-count').innerText = s.total;
-                const area = document.getElementById('stats-area');
                 area.innerHTML = '';
+// ... (rest of stats logic preserved in replacement) ...
                 ['S', 'A', 'B', 'C', 'D', 'E', 'F'].forEach(r => {
                     const count = s[r] || 0;
                     const per = s.total > 0 ? Math.round((count / s.total) * 100) : 0;
@@ -1003,8 +1007,14 @@
                     method: 'POST', mode: 'no-cors',
                     body: JSON.stringify({ school: sc, name: nm, pledge: pl, rank: finalRank })
                 });
-                alert2('등록 완료', '나의 다짐이 게시판에 멋지게 등록되었습니다!', '✅', loadBoard);
-            } catch (e) { alert2('오류', '등록 중에 문제가 생겼어요. 다시 시도해볼까요?', '❌'); }
+                alert2('등록 완료', '나의 다짐이 게시판에 멋지게 등록되었습니다!', '✅', () => {
+                    loadBoard();
+                    fetchStats(); // 다짐 등록 후 통계도 갱신
+                });
+            } catch (e) { 
+                console.error('Pledge submission failed:', e);
+                alert2('오류', '등록 중에 문제가 생겼어요. 다시 시도해볼까요?', '❌'); 
+            }
             finally { btn.disabled = false; btn.innerText = '약속 등록하기'; }
         }
 
