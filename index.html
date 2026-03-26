@@ -140,6 +140,13 @@
             transition: width 0.8s ease-out;
         }
 
+        /* 커스텀 모달 애니메이션 */
+        @keyframes pop {
+            0% { transform: scale(0.9); opacity: 0; }
+            100% { transform: scale(1); opacity: 1; }
+        }
+        .animate-pop { animation: pop 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275); }
+
         .fade-in {
             animation: fadeIn 0.6s ease-out forwards;
         }
@@ -181,9 +188,52 @@
         }
 
         .image-box img {
-            width: 100%;
-            height: 100%;
             object-fit: cover;
+        }
+
+        /* 퀴즈 스타일 */
+        .word-card { 
+            cursor: pointer; 
+            transition: all 0.2s; 
+            border: 2px solid rgba(255,255,255,0.1); 
+            user-select: none;
+        }
+        .word-card.selected { 
+            border-color: #6366f1; 
+            background: rgba(99, 102, 241, 0.2); 
+            transform: scale(1.05); 
+            box-shadow: 0 0 15px rgba(99, 102, 241, 0.4); 
+        }
+        .quiz-blank { 
+            display: inline-block; 
+            min-width: 90px; 
+            height: 36px; 
+            border-bottom: 3px solid #6366f1; 
+            cursor: pointer; 
+            color: #818cf8; 
+            padding: 0 12px; 
+            vertical-align: bottom; 
+            text-align: center; 
+            line-height: 32px;
+            background: rgba(255,255,255,0.05);
+            border-radius: 8px 8px 0 0;
+            transition: all 0.2s;
+        }
+        .quiz-blank:empty::before { 
+            content: '???'; 
+            opacity: 0.3; 
+            font-size: 0.8em;
+        }
+        .word-card.used { 
+            opacity: 0.3; 
+            pointer-events: none; 
+            filter: grayscale(1);
+        }
+        .shake { animation: shake 0.4s ease-in-out; }
+        @keyframes shake {
+            0%, 100% { transform: translateX(0); }
+            25% { transform: translateX(-5px); }
+            75% { transform: translateX(5px); }
         }
     </style>
 </head>
@@ -347,23 +397,28 @@
 
         <!-- 퀴즈 화면 -->
         <div id="quiz-screen" class="hidden glass rounded-3xl p-8 text-center fade-in max-w-2xl mx-auto">
-            <h2 class="text-2xl font-black text-white mb-6">❓ 가디언 퀴즈</h2>
-            <p class="text-slate-400 mb-8">빈칸에 알맞은 말을 적어주세요!</p>
-            <div class="space-y-4 text-left bg-white/5 p-6 rounded-2xl border border-white/10 mb-8">
-                <div class="flex items-center gap-2 text-white font-bold">
-                    1. <input id="q1" type="text" class="quiz-in"> 한 시간만큼만 기기를 사용해요.
+            <h2 class="text-2xl font-black text-white mb-4">❓ 가디언 퀴즈</h2>
+            <p class="text-slate-400 mb-6">단어를 빈칸에 쏙쏙 넣어보세요!</p>
+            
+            <div id="word-bank" class="flex flex-wrap justify-center gap-3 mb-10 p-4 bg-white/5 rounded-2xl border border-white/10">
+                <!-- 단어들이 여기 생성됨 -->
+            </div>
+
+            <div class="space-y-6 text-left bg-white/5 p-6 rounded-2xl border border-white/10 mb-8">
+                <div class="flex items-center gap-2 text-white font-bold flex-wrap">
+                    1. <span class="quiz-blank" onclick="placeWord(this)"></span> 한 시간만큼만 기기를 사용해요.
                 </div>
-                <div class="flex items-center gap-2 text-white font-bold">
-                    2. <input id="q2" type="text" class="quiz-in"> 중에는 스마트폰을 보지 않아요.
+                <div class="flex items-center gap-2 text-white font-bold flex-wrap">
+                    2. <span class="quiz-blank" onclick="placeWord(this)"></span> 중에는 스마트폰을 보지 않아요.
                 </div>
-                <div class="flex items-center gap-2 text-white font-bold">
-                    3. <input id="q3" type="text" class="quiz-in"> 할 때나 수업 시간에는 공부 도우미로만 써요.
+                <div class="flex items-center gap-2 text-white font-bold flex-wrap">
+                    3. <span class="quiz-blank" onclick="placeWord(this)"></span> 할 때나 수업 시간에는 공부 도우미로만 써요.
                 </div>
-                <div class="flex items-center gap-2 text-white font-bold">
-                    4. <input id="q4" type="text" class="quiz-in"> 할 때나 길을 걸을 때는 스마트폰을 보지 않아요.
+                <div class="flex items-center gap-2 text-white font-bold flex-wrap">
+                    4. <span class="quiz-blank" onclick="placeWord(this)"></span> 할 때나 길을 걸을 때는 스마트폰을 보지 않아요.
                 </div>
-                <div class="flex items-center gap-2 text-white font-bold">
-                    5. <input id="q5" type="text" class="quiz-in"> 전에는 기기를 멀리하고 푹 자요.
+                <div class="flex items-center gap-2 text-white font-bold flex-wrap">
+                    5. <span class="quiz-blank" onclick="placeWord(this)"></span> 전에는 기기를 멀리하고 푹 자요.
                 </div>
                 <p id="quiz-feedback" class="text-sm font-bold text-rose-400 hidden mt-4 text-center">정답이 아니에요! 빈칸을 다시 확인해보세요.</p>
             </div>
@@ -372,17 +427,6 @@
                 약속 지키기 시작!
             </button>
         </div>
-
-        <style>
-            .quiz-in {
-                width: 80px; 
-                background: transparent; 
-                border-bottom: 2px solid #6366f1; 
-                text-align: center; 
-                outline: none; 
-                color: #818cf8;
-            }
-        </style>
 
         <!-- 게시판 -->
         <div id="pledge-screen" class="hidden space-y-6 fade-in pb-10">
@@ -424,6 +468,17 @@
         </div>
         <div id="full-board-content" class="grid gap-4 overflow-y-auto flex-1 pr-2 custom-scroll">
             <p class="text-slate-500 text-center py-10">약속을 불러오는 중...</p>
+        </div>
+    </div>
+
+    <!-- 커스텀 모달 -->
+    <div id="custom-modal" class="hidden fixed inset-0 z-[100] flex items-center justify-center p-6 fade-in">
+        <div class="absolute inset-0 bg-slate-950/60 backdrop-blur-sm" onclick="closeModal()"></div>
+        <div class="glass relative max-w-sm w-full p-8 rounded-3xl text-center shadow-2xl border border-white/20 animate-pop">
+            <div id="modal-icon" class="text-5xl mb-4">🔔</div>
+            <h3 id="modal-title" class="text-xl font-black text-white mb-2">알림</h3>
+            <p id="modal-message" class="text-slate-300 mb-8 leading-relaxed">내용입니다.</p>
+            <button onclick="closeModal()" class="btn-gradient w-full py-4 rounded-xl text-white font-bold shadow-lg">확인</button>
         </div>
     </div>
     </div>
@@ -634,7 +689,7 @@
 
         function startGame() {
             const nameInput = document.getElementById('char-name').value.trim();
-            if (!nameInput) { alert('이름을 입력해주세요!'); return; }
+            if (!nameInput) { alert2('알림', '우리 학생의 멋진 이름을 입력해주세요!', '✍️'); return; }
 
             charName = nameInput.toUpperCase();
             document.getElementById('user-name').value = charName;
@@ -743,6 +798,19 @@
             fetchStats();
         }
 
+        let modalCallback = null;
+        function alert2(title, msg, icon = "🔔", callback = null) {
+            document.getElementById('modal-title').innerText = title;
+            document.getElementById('modal-message').innerText = msg;
+            document.getElementById('modal-icon').innerText = icon;
+            document.getElementById('custom-modal').classList.remove('hidden');
+            modalCallback = callback;
+        }
+        function closeModal() {
+            document.getElementById('custom-modal').classList.add('hidden');
+            if (modalCallback) { modalCallback(); modalCallback = null; }
+        }
+
         async function recordRankOnly(rank) {
             if (!SCRIPT_URL) return;
             try {
@@ -794,23 +862,65 @@
             render();
         }
 
+        let selectedWord = null;
+
         function startQuiz() {
             document.getElementById('review-screen').classList.add('hidden');
             document.getElementById('quiz-screen').classList.remove('hidden');
-            for(let i=1; i<=5; i++) document.getElementById('q' + i).value = "";
             document.getElementById('quiz-feedback').classList.add('hidden');
+            selectedWord = null;
+            
+            // 빈칸 초기화
+            document.querySelectorAll('.quiz-blank').forEach(b => b.innerText = "");
+            
+            // 단어 창고 생성 (랜덤 섞기)
+            const words = ["약속", "식사", "공부", "이동", "잠자기"].sort(() => Math.random() - 0.5);
+            const bank = document.getElementById('word-bank');
+            bank.innerHTML = words.map(w => `
+                <div class="word-card px-4 py-2 bg-white/10 rounded-xl text-white font-bold" onclick="selectWord(this)">${w}</div>
+            `).join('');
+        }
+
+        function selectWord(el) {
+            if (el.classList.contains('used')) return;
+            document.querySelectorAll('.word-card').forEach(w => w.classList.remove('selected'));
+            el.classList.add('selected');
+            selectedWord = el;
+        }
+
+        function placeWord(blank) {
+            // 이미 채워진 경우 다시 돌려보내기
+            if (blank.innerText) {
+                const word = blank.innerText;
+                const cards = document.querySelectorAll('.word-card');
+                cards.forEach(c => {
+                    if (c.innerText === word) c.classList.remove('used');
+                });
+                blank.innerText = "";
+                return;
+            }
+
+            // 선택된 단어가 있는 경우 채우기
+            if (selectedWord) {
+                blank.innerText = selectedWord.innerText;
+                selectedWord.classList.add('used');
+                selectedWord.classList.remove('selected');
+                selectedWord = null;
+            }
         }
 
         function checkQuizAnswer() {
-            const a1 = document.getElementById('q1').value.trim();
-            const a2 = document.getElementById('q2').value.trim();
-            const a3 = document.getElementById('q3').value.trim();
-            const a4 = document.getElementById('q4').value.trim();
-            const a5 = document.getElementById('q5').value.trim();
+            const blanks = document.querySelectorAll('.quiz-blank');
+            const answers = Array.from(blanks).map(b => b.innerText);
+            const correct = ["약속", "식사", "공부", "이동", "잠자기"];
             
-            if (a1 === "약속" && a2 === "식사" && a3 === "공부" && a4 === "이동" && a5 === "잠자기") {
-                alert('완벽해요! 이제 진짜 스마트 가디언이 될 준비가 되었습니다.');
-                restartGame();
+            let isAllCorrect = true;
+            for(let i=0; i<5; i++) {
+                if(answers[i] !== correct[i]) isAllCorrect = false;
+            }
+            
+            if (isAllCorrect) {
+                 alert2('가디언 탄생!', '완벽해요! 이제 진짜 스마트 가디언이 될 준비가 되었습니다.', '🌟', restartGame);
             } else {
                 const fb = document.getElementById('quiz-feedback');
                 fb.classList.remove('hidden');
@@ -855,16 +965,15 @@
             const nm = document.getElementById('user-name').value;
             const pl = document.getElementById('user-pledge').value;
             const btn = document.getElementById('submit-pledge');
-            if (!sc || !nm || !pl) { alert('빈칸을 채워주세요!'); return; }
+            if (!sc || !nm || !pl) { alert2('알림', '학교와 이름, 다짐 내용을 모두 채워주세요!', '📝'); return; }
             btn.disabled = true; btn.innerText = '저장 중...';
             try {
                 await fetch(SCRIPT_URL, {
                     method: 'POST', mode: 'no-cors',
                     body: JSON.stringify({ school: sc, name: nm, pledge: pl, rank: finalRank })
                 });
-                alert('다짐이 등록되었습니다!');
-                loadBoard();
-            } catch (e) { alert('오류 발생'); }
+                alert2('등록 완료', '나의 다짐이 게시판에 멋지게 등록되었습니다!', '✅', loadBoard);
+            } catch (e) { alert2('오류', '등록 중에 문제가 생겼어요. 다시 시도해볼까요?', '❌'); }
             finally { btn.disabled = false; btn.innerText = '약속 등록하기'; }
         }
 
