@@ -329,21 +329,60 @@
 
         <!-- 규칙 학습 화면 -->
         <div id="review-screen" class="hidden glass rounded-3xl p-10 text-center fade-in">
-            <h2 class="text-2xl font-black text-white mb-8">🛡️ 스마트 가디언 5계명</h2>
-            <div class="text-left space-y-4 mb-10 text-lg font-bold text-slate-200">
-                <div class="p-4 bg-white/5 rounded-xl border border-white/10">1️⃣ <b>약속한 시간</b>만큼만 기기를 사용해요.</div>
-                <div class="p-4 bg-white/5 rounded-xl border border-white/10">2️⃣ <b>식사 중</b>이나 <b>길을 걸을 때</b>는 쓰지 않아요.
-                </div>
-                <div class="p-4 bg-white/5 rounded-xl border border-white/10">3️⃣ <b>다른 사람</b>의 기기는 허락 받고 사용해요.</div>
-                <div class="p-4 bg-white/5 rounded-xl border border-white/10">4️⃣ 인터넷에서 친구들에게 <b>바른 말</b>을 써요.</div>
-                <div class="p-4 bg-white/5 rounded-xl border border-white/10">5️⃣ <b>잠자기 전</b>에는 기기를 멀리하고 푹 자요.</div>
+            <h2 class="text-2xl font-black text-white mb-4">🛡️ 바람직한 스마트기기 활용 방법 5가지</h2>
+            <p class="text-slate-400 mb-8">모든 규칙을 클릭해서 약속을 확인해주세요! (0/5)</p>
+            <div id="rules-list" class="text-left space-y-4 mb-10 text-lg font-bold">
+                <div onclick="toggleRule(0)" class="rule-card p-4 bg-white/5 rounded-xl border border-white/10 cursor-pointer transition-all hover:bg-white/10">1️⃣ <b>약속</b>한 시간만큼만 기기를 사용해요.</div>
+                <div onclick="toggleRule(1)" class="rule-card p-4 bg-white/5 rounded-xl border border-white/10 cursor-pointer transition-all hover:bg-white/10">2️⃣ <b>식사</b> 중에는 스마트폰을 보지 않아요.</div>
+                <div onclick="toggleRule(2)" class="rule-card p-4 bg-white/5 rounded-xl border border-white/10 cursor-pointer transition-all hover:bg-white/10">3️⃣ <b>공부</b>할 때나 수업 시간에는 공부 도우미로만 써요.</div>
+                <div onclick="toggleRule(3)" class="rule-card p-4 bg-white/5 rounded-xl border border-white/10 cursor-pointer transition-all hover:bg-white/10">4️⃣ <b>이동</b>할 때나 길을 걸을 때는 스마트폰을 보지 않아요.</div>
+                <div onclick="toggleRule(4)" class="rule-card p-4 bg-white/5 rounded-xl border border-white/10 cursor-pointer transition-all hover:bg-white/10">5️⃣ <b>잠자기</b> 전에는 스마트폰을 멀리하고 푹 자요.</div>
             </div>
-            <p class="text-indigo-300 font-black mb-8 text-xl">이 규칙들을 잘 지킬 수 있나요?</p>
-            <button onclick="restartGame()"
-                class="btn-gradient w-full text-white font-black py-5 px-8 rounded-2xl text-xl shadow-2xl">
+            <p id="review-hint" class="text-indigo-300 font-black mb-8 text-xl opacity-50">모든 약속을 확인하면 버튼이 나타나요!</p>
+            <button id="restart-game-btn" onclick="startQuiz()"
+                class="hidden btn-gradient w-full text-white font-black py-5 px-8 rounded-2xl text-xl shadow-2xl">
                 네! 다시 약속을 지키러 갈게요!
             </button>
         </div>
+
+        <!-- 퀴즈 화면 -->
+        <div id="quiz-screen" class="hidden glass rounded-3xl p-8 text-center fade-in max-w-2xl mx-auto">
+            <h2 class="text-2xl font-black text-white mb-6">❓ 가디언 퀴즈</h2>
+            <p class="text-slate-400 mb-8">빈칸에 알맞은 말을 적어주세요!</p>
+            <div class="space-y-4 text-left bg-white/5 p-6 rounded-2xl border border-white/10 mb-8">
+                <div class="flex items-center gap-2 text-white font-bold">
+                    1. <input id="q1" type="text" class="quiz-in"> 한 시간만큼만 기기를 사용해요.
+                </div>
+                <div class="flex items-center gap-2 text-white font-bold">
+                    2. <input id="q2" type="text" class="quiz-in"> 중에는 스마트폰을 보지 않아요.
+                </div>
+                <div class="flex items-center gap-2 text-white font-bold">
+                    3. <input id="q3" type="text" class="quiz-in"> 할 때나 수업 시간에는 공부 도우미로만 써요.
+                </div>
+                <div class="flex items-center gap-2 text-white font-bold">
+                    4. <input id="q4" type="text" class="quiz-in"> 할 때나 길을 걸을 때는 스마트폰을 보지 않아요.
+                </div>
+                <div class="flex items-center gap-2 text-white font-bold">
+                    5. <input id="q5" type="text" class="quiz-in"> 전에는 기기를 멀리하고 푹 자요.
+                </div>
+                <p id="quiz-feedback" class="text-sm font-bold text-rose-400 hidden mt-4 text-center">정답이 아니에요! 빈칸을 다시 확인해보세요.</p>
+            </div>
+            <button onclick="checkQuizAnswer()"
+                class="btn-gradient w-full text-white font-black py-5 px-8 rounded-2xl text-xl shadow-2xl">
+                약속 지키기 시작!
+            </button>
+        </div>
+
+        <style>
+            .quiz-in {
+                width: 80px; 
+                background: transparent; 
+                border-bottom: 2px solid #6366f1; 
+                text-align: center; 
+                outline: none; 
+                color: #818cf8;
+            }
+        </style>
 
         <!-- 게시판 -->
         <div id="pledge-screen" class="hidden space-y-6 fade-in pb-10">
@@ -377,7 +416,8 @@
     </div>
 
     <!-- 전체 약속 보기 화면 -->
-    <div id="full-board-screen" class="hidden glass rounded-3xl p-8 fade-in min-h-[80vh] flex flex-col max-w-3xl mx-auto my-10">
+    <div id="full-board-screen"
+        class="hidden glass rounded-3xl p-8 fade-in min-h-[80vh] flex flex-col max-w-3xl mx-auto my-10">
         <div class="flex justify-between items-center mb-8">
             <h2 class="text-2xl font-black text-white">🤝 우리 반 약속 모음</h2>
             <button onclick="closeFullBoard()" class="text-slate-400 hover:text-white font-black">뒤로 가기</button>
@@ -714,17 +754,69 @@
             } catch (e) { }
         }
 
+        let checkedRules = [false, false, false, false, false];
+
         function showReview() {
+            checkedRules = [false, false, false, false, false];
+            const cards = document.querySelectorAll('.rule-card');
+            cards.forEach(c => {
+                c.classList.remove('bg-indigo-600/30', 'border-indigo-500', 'text-white');
+                c.classList.add('bg-white/5', 'border-white/10');
+            });
+            document.querySelector('#review-screen p').innerText = "모든 규칙을 클릭해서 약속을 확인해주세요! (0/5)";
+            document.getElementById('restart-game-btn').classList.add('hidden');
+            document.getElementById('review-hint').classList.remove('hidden');
+            
             document.getElementById('result-screen').classList.add('hidden');
             document.getElementById('review-screen').classList.remove('hidden');
+        }
+
+        function toggleRule(idx) {
+            checkedRules[idx] = true;
+            const card = document.querySelectorAll('.rule-card')[idx];
+            card.classList.add('bg-indigo-600/30', 'border-indigo-500', 'text-white');
+            card.classList.remove('bg-white/5', 'border-white/10');
+            
+            const count = checkedRules.filter(r => r).length;
+            document.querySelector('#review-screen p').innerText = `모든 규칙을 클릭해서 약속을 확인해주세요! (${count}/5)`;
+            
+            if (count === 5) {
+                document.getElementById('restart-game-btn').classList.remove('hidden');
+                document.getElementById('review-hint').classList.add('hidden');
+            }
         }
 
         function restartGame() {
             current = 'morning';
             stats = { time: 50, etic: 50, health: 100 };
-            document.getElementById('review-screen').classList.add('hidden');
+            document.getElementById('quiz-screen').classList.add('hidden');
             document.getElementById('game-screen').classList.remove('hidden');
             render();
+        }
+
+        function startQuiz() {
+            document.getElementById('review-screen').classList.add('hidden');
+            document.getElementById('quiz-screen').classList.remove('hidden');
+            for(let i=1; i<=5; i++) document.getElementById('q' + i).value = "";
+            document.getElementById('quiz-feedback').classList.add('hidden');
+        }
+
+        function checkQuizAnswer() {
+            const a1 = document.getElementById('q1').value.trim();
+            const a2 = document.getElementById('q2').value.trim();
+            const a3 = document.getElementById('q3').value.trim();
+            const a4 = document.getElementById('q4').value.trim();
+            const a5 = document.getElementById('q5').value.trim();
+            
+            if (a1 === "약속" && a2 === "식사" && a3 === "공부" && a4 === "이동" && a5 === "잠자기") {
+                alert('완벽해요! 이제 진짜 스마트 가디언이 될 준비가 되었습니다.');
+                restartGame();
+            } else {
+                const fb = document.getElementById('quiz-feedback');
+                fb.classList.remove('hidden');
+                fb.classList.add('shake');
+                setTimeout(() => fb.classList.remove('shake'), 500);
+            }
         }
 
         async function fetchStats() {
@@ -791,12 +883,12 @@
             document.getElementById('full-board-screen').classList.remove('hidden');
             const area = document.getElementById('full-board-content');
             area.innerHTML = '<p class="text-slate-500 text-center py-10">모든 약속을 불러오고 있어요...</p>';
-            
+
             try {
                 const res = await fetch(SCRIPT_URL + "?all=true");
                 const data = await res.json();
                 renderBoard(area, data.recent);
-            } catch (e) { 
+            } catch (e) {
                 area.innerHTML = '<p class="text-rose-400 text-center py-10">불러오기에 실패했습니다.</p>';
             }
         }
