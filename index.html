@@ -196,7 +196,10 @@
         <div id="intro-screen" class="glass rounded-3xl p-10 text-center fade-in">
             <h1 class="text-3xl font-extrabold mb-6 tracking-tight text-white font-black">바람직한 스마트기기 활용 약속</h1>
             <div class="aspect-video mb-8 rounded-2xl overflow-hidden border-2 border-white/20 shadow-2xl">
-                <iframe class="w-full h-full" src="https://www.youtube.com/embed/VE_GRpDegS4" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
+                <iframe class="w-full h-full" src="https://www.youtube.com/embed/VE_GRpDegS4"
+                    title="YouTube video player" frameborder="0"
+                    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+                    allowfullscreen></iframe>
             </div>
             <p class="text-slate-300 mb-8 leading-relaxed">
                 영상을 보고 난 후, 우리 모두 함께<br>
@@ -214,13 +217,17 @@
                 <div class="absolute inset-0 bg-indigo-500 blur-3xl opacity-30 rounded-full animate-pulse"></div>
                 <div class="text-7xl">⚔️</div>
             </div>
-            <h1 class="text-4xl font-extrabold mb-4 tracking-tight text-white font-black">디지털 가디언 카드</h1>
+            <h1 class="text-4xl font-extrabold mb-4 tracking-tight text-white font-black">디지털 가디언</h1>
             <p class="text-slate-400 mb-8 leading-relaxed">
                 나의 스마트기기 습관이 전설의 카드가 됩니다.<br>
                 나만의 캐릭터를 성장시켜 S급 레전드 카드를 획득하세요!
             </p>
-            <input id="char-name" type="text" placeholder="가디언 이름 (예: 민수)"
-                class="w-full p-4 rounded-2xl bg-white/10 border-2 border-white/20 text-white font-bold mb-6 text-center focus:border-indigo-500 outline-none">
+            <div class="grid grid-cols-2 gap-4 mb-6">
+                <input id="char-school" type="text" placeholder="우리 학교 (예: 하주초)"
+                    class="p-4 rounded-2xl bg-white/10 border-2 border-white/20 text-white font-bold text-center focus:border-indigo-500 outline-none">
+                <input id="char-name" type="text" placeholder="이름 (예: 민수)"
+                    class="p-4 rounded-2xl bg-white/10 border-2 border-white/20 text-white font-bold text-center focus:border-indigo-500 outline-none">
+            </div>
             <button onclick="startGame()"
                 class="btn-gradient w-full text-white font-black py-5 px-8 rounded-2xl text-xl shadow-2xl">
                 카드 각성 시작하기
@@ -264,7 +271,7 @@
                 <div class="image-box h-[300px]">
                     <img id="scene-img" src="" alt="scene illustration">
                 </div>
-                <p id="story-description" class="text-2xl font-black text-white leading-tight mb-8"></p>
+                <p id="story-description" class="text-2xl font-black text-white leading-tight mb-8 whitespace-pre-line"></p>
                 <div id="choices-area" class="grid grid-cols-1 md:grid-cols-2 gap-4"></div>
                 <div id="feedback-box"
                     class="hidden mt-6 p-5 rounded-2xl font-bold bg-rose-500/20 text-rose-300 border border-rose-500/50">
@@ -311,9 +318,30 @@
                 <div id="stats-area" class="space-y-3"></div>
             </div>
 
-            <button onclick="showPledge()"
-                class="btn-gradient w-full text-white font-black py-5 px-8 rounded-2xl text-xl">
+            <button id="commit-btn" onclick="showPledge()"
+                class="btn-gradient w-full text-white font-black py-5 px-8 rounded-2xl text-xl mb-4">
                 다짐 남기고 카드 등록
+            </button>
+            <button id="retry-btn-result" onclick="showReview()"
+                class="hidden w-full bg-white/10 text-white font-bold py-4 rounded-2xl border-2 border-white/20 hover:bg-white/20 transition-all">
+                규칙 배우고 다시 도전하기
+            </button>
+        </div>
+
+        <!-- 규칙 학습 화면 -->
+        <div id="review-screen" class="hidden glass rounded-3xl p-10 text-center fade-in">
+            <h2 class="text-2xl font-black text-white mb-8">🛡️ 스마트 가디언 5계명</h2>
+            <div class="text-left space-y-4 mb-10 text-lg font-bold text-slate-200">
+                <div class="p-4 bg-white/5 rounded-xl border border-white/10">1️⃣ <b>약속한 시간</b>만큼만 기기를 사용해요.</div>
+                <div class="p-4 bg-white/5 rounded-xl border border-white/10">2️⃣ <b>식사 중</b>이나 <b>길을 걸을 때</b>는 쓰지 않아요.</div>
+                <div class="p-4 bg-white/5 rounded-xl border border-white/10">3️⃣ <b>다른 사람</b>의 기기는 허락 받고 사용해요.</div>
+                <div class="p-4 bg-white/5 rounded-xl border border-white/10">4️⃣ 인터넷에서 친구들에게 <b>바른 말</b>을 써요.</div>
+                <div class="p-4 bg-white/5 rounded-xl border border-white/10">5️⃣ <b>잠자기 전</b>에는 기기를 멀리하고 푹 자요.</div>
+            </div>
+            <p class="text-indigo-300 font-black mb-8 text-xl">이 규칙들을 잘 지킬 수 있나요?</p>
+            <button onclick="restartGame()"
+                class="btn-gradient w-full text-white font-black py-5 px-8 rounded-2xl text-xl shadow-2xl">
+                네! 다시 약속을 지키러 갈게요!
             </button>
         </div>
 
@@ -366,7 +394,7 @@
                 desc: '신호등 앞에서 친구가 스마트폰 게임을 같이 하자고 불러요. 어떡하죠?',
                 choices: [
                     { text: '"걸어갈 때는 위험해!"라고 말하며 폰을 가방에 넣어요.', next: 'class_tablet', reason: '등굣길 안전을 잘 지킨 덕분에 아무 사고 없이 학교에 도착했어요!', stats: { etic: +20, health: +15 } },
-                    { text: '초록불이 켜질 때까지만 딱 5초만 같이 구경해요.', next: 'class_tablet', reason: '잠깐만 보려 했지만, 화면을 보느라 발밑을 못 봐서 넘어질 뻔했어요.', stats: { etic: +5, health: -5 } },
+                    { text: '초록불이 켜질 때까지만 친구와 같이 구경해요.', next: 'class_tablet', reason: '잠깐만 보려 했지만, 화면을 보느라 발밑을 못 봐서 넘어질 뻔했어요.', stats: { etic: +5, health: -5 } },
                     { text: '걸어가면서도 소리만 들으면 괜찮겠지? 이어폰을 껴요.', next: 'class_tablet', reason: '이어폰 소리 때문에 차 소리를 못 들어서 정말 위험한 상황이었어요.', stats: { health: -15, etic: -5 } },
                     { text: '화면만 보면서 횡단보도를 조심조심 건너요.', next: 'class_tablet_late', reason: '스마트폰을 보며 걷느라 신호가 바뀐 것도 몰라 지각했어요.', stats: { health: -40, etic: -20, time: -10 } }
                 ]
@@ -442,7 +470,7 @@
                 img: 'lunch.png',
                 desc: '맛있는 급식 시간! 식당의 큰 TV에서 재미있는 뉴스가 나오고 있어요.',
                 choices: [
-                    { text: '뉴스보다 친구와 얼굴을 보며 즐겁게 대화하며 먹어요.', next: 'branch_after', reason: '친구와 수다 떨며 먹어서 소화도 잘되고 우정도 깊어졌어요!', stats: { health: +20, etic: +15 } },
+                    { text: '뉴스 대신 친구와 얼굴을 보며 즐겁게 대화하며 먹어요.', next: 'branch_after', reason: '친구와 수다 떨며 먹어서 소화도 잘되고 우정도 깊어졌어요!', stats: { health: +20, etic: +15 } },
                     { text: '뉴스를 보면서 천천히 식사 예절을 지켜요.', next: 'branch_after', reason: '뉴스 내용도 알고 밥도 깨끗이 다 비웠어요.', stats: { etic: +10, health: +5 } },
                     { text: '화면만 쳐다보느라 밥이 코로 들어가는지 모를 정도로 먹어요.', next: 'branch_after', reason: 'TV 보느라 밥을 제대로 씹지 않아서 배가 조금 아파요.', stats: { health: -15, etic: -15 } },
                     { text: '밥을 초스피드로 다 먹고 운동장에서 신나게 뛰놀아요.', next: 'branch_after', reason: '스마트기기 대신 몸으로 놀아서 건강해진 기분이에요!', stats: { health: +35, time: +10 } }
@@ -511,7 +539,7 @@
                     { text: '밤길은 위험하니까 폰은 무시하고 앞을 보며 걸어요.', next: 'dinner', reason: '주변을 살피며 안전하게 걸어서 무사히 집에 도착했어요!', stats: { health: +30, etic: +10 } },
                     { text: '부모님이 걱정하실 테니 "지금 가요"라고 한 줄만 답장해요.', next: 'dinner', reason: '필요한 연락만 짧게 하고 다시 폰을 가방에 잘 넣었어요.', stats: { etic: +20, time: +10 } },
                     { text: '궁금한 만화가 업데이트됐나 보면서 걸어가요.', next: 'dinner', reason: '어두운 길에서 폰을 보느라 발이 꼬여서 크게 넘어질 뻔했어요.', stats: { health: -40, etic: -15 } },
-                    { text: '무서우니까 폰 후레쉬를 밝히고 바닥만 보며 걸어요.', next: 'dinner', reason: '바닥만 보다가 전봇대에 부딪칠 뻔한 아찔한 상황이었어요.', stats: { health: -25, time: -5 } }
+                    { text: '무서우니까 폰 손전등을 밝히고 바닥만 보며 걸어요.', next: 'dinner', reason: '바닥만 보다가 전봇대에 부딪칠 뻔한 아찔한 상황이었어요.', stats: { health: -25, time: -5 } }
                 ]
             },
             'dinner': {
@@ -522,7 +550,7 @@
                     { text: 'TV를 끄고 부모님과 오늘 있었던 즐거운 일을 말해요.', next: 'night', reason: '가족과 마주 보며 이야기 나누니 밥이 정말 꿀맛이에요!', stats: { etic: +30, health: +15 } },
                     { text: '부모님께 오늘 세운 "스마트 가디언 약속"을 말씀드려요.', next: 'night', reason: '약속을 자랑했더니 부모님께서 정말 기특하다고 칭찬해주셨어요!', stats: { etic: +40, health: +10 } },
                     { text: 'TV 뉴스만 보면서 조용히 밥을 먹어요.', next: 'night', reason: '대화는 적었지만 밥은 천천히 꼭꼭 씹어 먹었어요.', stats: { etic: +10, health: +5 } },
-                    { text: '빨리 먹고 방에 가서 태블릿 하고 싶어서 서둘러요.', next: 'night', reason: '빨리 먹느라 급하게 삼켜서 가슴이 답답하고 소화가 안 돼요.', stats: { etic: -20, health: -15 } }
+                    { text: '빨리 먹고 방에 가서 태블릿하고 싶어서 서둘러요.', next: 'night', reason: '빨리 먹느라 급하게 삼켜서 가슴이 답답하고 소화가 안 돼요.', stats: { etic: -20, health: -15 } }
                 ]
             },
             'night': {
@@ -541,6 +569,7 @@
         let current = 'morning';
         let stats = { time: 50, etic: 50, health: 100 };
         let charName = "가디언";
+        let charSchool = "";
         let finalRank = 'F';
 
         function goStart() {
@@ -549,8 +578,17 @@
         }
 
         function startGame() {
-            const input = document.getElementById('char-name').value.trim();
-            if (input) charName = input.toUpperCase();
+            const nameInput = document.getElementById('char-name').value.trim();
+            const schoolInput = document.getElementById('char-school').value.trim();
+            if (!nameInput || !schoolInput) { alert('학교와 이름을 모두 입력해주세요!'); return; }
+            
+            charName = nameInput.toUpperCase();
+            charSchool = schoolInput;
+            
+            // 다짐 화면의 빈칸도 미리 채워줌
+            document.getElementById('user-school').value = charSchool;
+            document.getElementById('user-name').value = charName;
+
             document.getElementById('start-screen').classList.add('hidden');
             document.getElementById('game-screen').classList.remove('hidden');
             render();
@@ -567,10 +605,12 @@
             updateBars();
             document.getElementById('scene-title').innerText = s.title || "OOPS";
 
-            // 이유와 설명을 합치고 이름 치환 적용
-            const mainDesc = t(s.desc);
-            const fullDesc = reason ? `💡 ${t(reason)}\n\n${mainDesc}` : mainDesc;
-            document.getElementById('story-description').innerText = fullDesc;
+            // 이유와 설명을 합치고 이름 치환 적용 및 자동 줄바꿈
+            let mainDesc = t(s.desc).replace(/([.!?]) /g, '$1\n');
+            let feedback = reason ? `💡 ${t(reason)}\n` : "";
+            if (feedback) feedback = feedback.replace(/([.!?]) /g, '$1\n');
+            
+            document.getElementById('story-description').innerText = feedback + mainDesc;
 
             const imgEl = document.getElementById('scene-img');
             if (s.img) {
@@ -637,7 +677,44 @@
             document.getElementById('c-stat-etic').innerText = stats.etic + '%';
             document.getElementById('c-stat-health').innerText = stats.health + '%';
 
+            // 랭크 기록 및 버튼 처리
+            recordRankOnly(rank);
+            const commitBtn = document.getElementById('commit-btn');
+            const retryBtn = document.getElementById('retry-btn-result');
+            
+            if (rank === 'S' || rank === 'A') {
+                commitBtn.classList.remove('hidden');
+                retryBtn.classList.add('hidden');
+            } else {
+                commitBtn.classList.add('hidden');
+                retryBtn.classList.remove('hidden');
+            }
+
             fetchStats();
+        }
+
+        async function recordRankOnly(rank) {
+            if (!SCRIPT_URL) return;
+            try {
+                // 등급만 따로 기록 (Pledge 없이)
+                fetch(SCRIPT_URL, {
+                    method: 'POST', mode: 'no-cors',
+                    body: JSON.stringify({ school: charSchool, name: charName, rank: rank, type: 'rank_only' })
+                });
+            } catch (e) {}
+        }
+
+        function showReview() {
+            document.getElementById('result-screen').classList.add('hidden');
+            document.getElementById('review-screen').classList.remove('hidden');
+        }
+
+        function restartGame() {
+            current = 'morning';
+            stats = { time: 50, etic: 50, health: 100 };
+            document.getElementById('review-screen').classList.add('hidden');
+            document.getElementById('game-screen').classList.remove('hidden');
+            render();
         }
 
         async function fetchStats() {
