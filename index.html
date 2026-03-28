@@ -348,7 +348,7 @@
                 </div>
                 <div class="card-img-box">
                     <div class="card-hologram"></div>
-                    <span id="card-icon" class="text-7xl relative z-10">🤖</span>
+                    <img id="card-rank-img" class="w-32 h-32 object-contain relative z-10 mx-auto drop-shadow-2xl" src="" alt="rank">
                 </div>
                 <div class="p-4 text-left">
                     <div class="bg-white/10 p-2 rounded mb-3 text-center">
@@ -775,13 +775,13 @@
             const total = (stats.time + stats.etic + stats.health) / 3;
             let icon = "🤖", rank = "F", color = "#94a3b8", d = "";
 
-            if (total >= 95) { rank = "S"; icon = "👑"; color = "var(--rank-s)"; d = `전설의 디지털 마스터 가디언! ${charName}님의 자제력은 세계 최고 수준입니다.`; }
-            else if (total >= 80) { rank = "A"; icon = "💎"; color = "var(--rank-a)"; d = `빛나는 에픽 가디언! ${charName}님은 스마트기기를 도구로 완벽히 다룰 줄 아시네요.`; }
-            else if (total >= 65) { rank = "B"; icon = "⚔️"; color = "var(--rank-b)"; d = `든든한 레어 가디언! ${charName}님, 조금만 더 노력하면 마스터가 될 수 있어요.`; }
-            else if (total >= 50) { rank = "C"; icon = "🛡️"; color = "var(--rank-c)"; d = `성장하는 언커먼 가디언! ${charName}님, 이제 스스로 규칙을 세우는 연습을 해요.`; }
-            else if (total >= 35) { rank = "D"; icon = "🌱"; color = "var(--rank-d)"; d = `보통의 커먼 가디언! ${charName}님, 가끔은 폰보다 현실의 즐거움에 더 집중해봐요.`; }
-            else if (total >= 20) { rank = "E"; icon = "⚠️"; color = "var(--rank-e)"; d = `조심해야 할 가디언! ${charName}님은 스마트폰 중독의 위험이 있으니 주의가 필요해요.`; }
-            else { rank = "F"; icon = "💀"; color = "var(--rank-f)"; d = `${charName}님은 위험한 상태입니다! 현실의 삶을 되찾기 위한 강력한 약속이 필요합니다.`; }
+            if (total >= 95) { rank = "S"; icon = "🌟"; color = "var(--rank-s)"; d = `[슈퍼 스마트 가디언] 몸과 마음이 정말 건강해요! 스마트폰보다 더 즐거운 세상을 마음껏 누리는 우리 반 최고의 모범생입니다.`; }
+            else if (total >= 80) { rank = "A"; icon = "✅"; color = "var(--rank-a)"; d = `[우수 스마트 가디언] 바른 습관의 달인! 스마트기기를 공부 도우미로만 똑똑하게 사용하는 아주 멋진 모습이에요.`; }
+            else if (total >= 65) { rank = "B"; icon = "👍"; color = "var(--rank-b)"; d = `[성실 스마트 가디언] 규칙을 잘 지켜요! 가끔 유혹이 찾아와도 스스로 이겨내는 힘이 아주 충분한 가디언입니다.`; }
+            else if (total >= 50) { rank = "C"; icon = "👀"; color = "var(--rank-c)"; d = `[조심 가디언] 눈이 조금씩 피곤해 보여요! 이제 스마트폰을 잠시 내려놓고 먼 산을 보며 눈 체조를 해볼까요?`; }
+            else if (total >= 35) { rank = "D"; icon = "🐢"; color = "var(--rank-d)"; d = `[위험 가디언] 거북목 주의! 고개를 너무 숙이고 화면만 보느라 소중한 주변 사람들을 못 보고 지나치고 있네요.`; }
+            else if (total >= 20) { rank = "E"; icon = "⚠️"; color = "var(--rank-e)"; d = `[중독 주의 가디언] 스마트폰 없이는 불안한가요? 현실 친구들과 눈을 맞추며 대화하는 즐거움을 다시 찾아야 해요.`; }
+            else { rank = "F"; icon = "🧟"; color = "var(--rank-f)"; d = `[스마트 좀비 등급] D'oh! 스마트폰에 온 마음을 빼앗겼어요. 지금 당장 '다시 키우기'를 통해 건강한 나를 되찾아야 합니다!`; }
 
             finalRank = rank;
             const card = document.getElementById('pokemon-card');
@@ -789,7 +789,7 @@
             document.getElementById('card-name-text').innerText = charName;
             document.getElementById('card-rank-text').innerText = rank + " RANK";
             document.getElementById('card-rank-text').style.color = color;
-            document.getElementById('card-icon').innerText = icon;
+            document.getElementById('card-rank-img').src = `images/${rank}.png`;
             document.getElementById('card-desc').innerText = d;
             document.getElementById('card-hp-text').innerText = "HP " + stats.health;
             document.getElementById('c-stat-time').innerText = stats.time + '%';
